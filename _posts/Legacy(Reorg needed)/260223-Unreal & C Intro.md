@@ -1,3 +1,10 @@
+---
+title: "Unreal & C++ basics 1"
+author: Jaeseong Kim
+categories: [Unreal, Intro]
+tags: [Cnrea+]
+---
+
 오늘은 내일배움캠프 첫날로써 기본적인 소개와 진행에 대해 설명을 들으며 시작했다.
 
 * 과정 소개, 향후 진행 과정

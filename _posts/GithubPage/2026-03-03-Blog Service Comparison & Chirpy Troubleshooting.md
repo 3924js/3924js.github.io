@@ -1,8 +1,8 @@
 ---
-title: 2026-03-03-블로그 서비스 비교, Chirpy 블로그 트러블슈팅
+title: 블로그 서비스 비교, Chirpy 블로그 트러블슈팅
 author: Jaeseong Kim
 categories: [Blog, Chirpy]
-tags: [Blog]
+tags: [Blog, GitHub Page, Chirpy]
 
 ---
 # 블로그 종류

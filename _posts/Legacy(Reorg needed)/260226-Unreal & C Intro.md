@@ -1,3 +1,10 @@
+---
+title: "Unreal & C++ basics 4"
+author: Jaeseong Kim
+categories: [Unreal, Intro]
+tags: [Unreal]
+---
+
 * 언리얼
   * 레벨 디자인: 플레이어가 상호작용할 공간의 설계
   * 에셋
