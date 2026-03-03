@@ -2,7 +2,7 @@
 title: "Unreal & C++ basics 2"
 author: Jaeseong Kim
 categories: [Unreal, Intro]
-tags: [Cnrea+]
+tags: [Unreal]
 ---
 
 오늘은 보다 다른 내용으로 더 들어갔다.

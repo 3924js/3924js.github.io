@@ -1,6 +1,7 @@
 ---
 title: 블로그 서비스 비교, Chirpy 블로그 트러블슈팅
 author: Jaeseong Kim
+date: 2026-03-03 12:00:00 +0800
 categories: [Blog, Chirpy]
 tags: [Blog, GitHub Page, Chirpy]
 

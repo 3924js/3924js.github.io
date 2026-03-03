@@ -1,8 +1,9 @@
 ---
 title: "Unreal & C++ basics 3"
 author: Jaeseong Kim
+date: 2026-02-25 12:00:00 +0800
 categories: [Unreal, Intro]
-tags: [Cnrea+]
+tags: [Unreal]
 ---
 
  * 언리얼

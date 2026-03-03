@@ -1,6 +1,7 @@
 ---
 title: "C Language: 동적할당(Dynamic Allocation,"
 author: Jaeseong Kim
+date: 2026-03-03 12:00:00 +0800
 categories: [C++, C Intro]
 tags: [C++]
 ---
