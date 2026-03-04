@@ -1,5 +1,6 @@
 ---
 title: "C++: 알고리즘 기초"
+math: true
 author: Jaeseong Kim
 date: 2026-03-04 12:00:00 +0800
 categories: [C++, Algorithm]
