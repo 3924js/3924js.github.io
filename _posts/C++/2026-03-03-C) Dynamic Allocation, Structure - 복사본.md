@@ -1,9 +1,10 @@
+
 ---
 title: "C Language: 동적할당(Dynamic Allocation,"
 author: Jaeseong Kim
 date: 2026-03-03 12:00:00 +0800
-categories: [C++, C Intro]
-tags: [C++]
+categories: [C++, C Language]
+tags: [C++, C Language]
 ---
 
 * ## 8-1 힙 메모리(Heap Memory)
@@ -72,70 +73,182 @@ tags: [C++]
 			* 2개의 다른 메모리 값을 비교
 * ## 9-1 구조체 (Structure)
 	* 여러 자료형을 묶어 새로운 자료형으로 사용할 수 있게 해주는 기능
-		```c
-		struct Car
-		{
-			int Wheels;
-			char Color;
-			int Year;
-		};	//세미콜론 필요
-		
-		int main(){
-			struct Car Truck;
-			Truck.Wheels = 4;
-			Truck.Color = 'W';
-			Truck.Year = 2016;
-			printf("%d", Truck.Year); //2016 출력
-		}
-		```
+			```c
+			struct Car
+			{
+				int Wheels;
+				char Color;
+				int Year;
+			};	//세미콜론 필요
+			
+			int main(){
+				struct Car Truck;
+				Truck.Wheels = 4;
+				Truck.Color = 'W';
+				Truck.Year = 2016;
+				printf("%d", Truck.Year); //2016 출력
+			}
+			```
 		* 함수의 반환형, 매개변수형으로 사용하여 여러 값을 한번에 전달 가능
-		```c
-		struct Car
-		{
-			int Wheels;
-			char Color;
-			int Year;
-		};	//세미콜론 필요
-		void printInfo(struct Car tempCar){
-		printf("%d %c %d", tempCar.Wheels, tempCar.Color, tempCar.Year);
-		}
-		int main(){
-			struct Car Truck;
-			Truck.Wheels = 4;
-			Truck.Color = 'W';
-			Truck.Year = 2016;
-			printInfo(Truck); //4 W 2016 출력
-		}
-		```
+			```c
+			struct Car
+			{
+				int Wheels;
+				char Color;
+				int Year;
+			};	//세미콜론 필요
+			void printInfo(struct Car tempCar){
+			printf("%d %c %d", tempCar.Wheels, tempCar.Color, tempCar.Year);
+			}
+			int main(){
+				struct Car Truck;
+				Truck.Wheels = 4;
+				Truck.Color = 'W';
+				Truck.Year = 2016;
+				printInfo(Truck); //4 W 2016 출력
+			}
+			```
 * ## 9-2 Typedef
 	* 기존 선언된 자료형을 새로운 이름으로 다른 이름을 추가
 		* ex) site_t => typedef unsigned long long size_t
 		* 구조체의 경우 불필요하게 struct 키워드를 반복해서 쓰지 않아도 됨
+			```c
+			typedef struct
+			{
+				int Wheels;
+				char Color;
+				int Year;
+			}Car_t;	//세미콜론 필요
+			
+			int main(){
+				Car_t Truck = {0,};	//struct 없이 선언
+				printf("%d", Truck.Year); //0 출력
+			}
+			```
+		* . 과 -> 둘다 접근에 사용 가능
+		* 일반적인 자료형처럼
+			* 함수 반환형과 매개변수형에 사용 가능
+				```c
+				struct Car
+				{
+					int Wheels;
+					char Color;
+					int Year;
+				};	//세미콜론 필요
+				void printInfo(struct Car tempCar){
+				printf("%d %c %d", tempCar.Wheels, tempCar.Color, tempCar.Year);
+				}
+				int main(){
+					struct Car Truck = {0,};
+					printInfo(Truck); //0 0 출력
+				}
+				```
+			* 포인터 사용 가능
+				```c
+				typedef struct
+				{
+					int Wheels;
+					char Color;
+					int Year;
+				}Car_t;	//세미콜론 필요
+				void printInfo(Car_t tempCar){
+				printf("%d %c %d", tempCar.Wheels, tempCar.Color, tempCar.Year);
+				}
+				void changeYear(Car_t* tempCar){
+					++(*tempCar).Year;
+				}
+				int main(){
+					Car_t Truck = {4,'W', 2016};
+					Car_t* targetPointer = &Truck;
+					changeYear(targetPointer );
+					printInfo(Truck); //4 W 2017 출력
+				}
+				```
+			* 배열 사용 가능
+			{% raw %}
+				```c
+				typedef struct
+				{
+					int Wheels;
+					char Color;
+					int Year;
+				}Car_t;
+				void printInfo(Car_t tempCar){
+				printf("%d %c %d", tempCar.Wheels, tempCar.Color, tempCar.Year);
+				}
+				int main(){
+					
+					Car_t Trucks[2] = {{4,'W', 2016},{6,'Y', 2012}};
+					
+					printInfo(Trucks[1]); //6 Y 2012 출력
+				}
+				```
+			{% endraw %}
+* ## 9-3 구조체와 클래스
+	* 객체 지향 프로그래밍(Object Oriented Programming)의 class 개념과 유사
+			* 필요한 여러 자료나 개념을 하나의 객체로 묶어서 사용.
+			* OOP class의 상속(Inheritance), 접근 제한 지정자(public, private, protected)등 차이점 탓에 완벽히 같은 개념은 아님.
+			* 클래스에선 맴버 변수를 선언 가능하지만, C언어 구조체는 절차 지향 언어로서 문법상에 기능이 없음
+		{% raw %}
 		```c
 		typedef struct
 		{
 			int Wheels;
 			char Color;
 			int Year;
-		}Car_t;	//세미콜론 필요
-		
+			void printInfo(){	//맴버 변수 불가능! 오류!
+				printf("%d %c %d", Wheels, Color, Year);
+			}
+		}Car_t;
 		int main(){
-			Car_t Truck = {0,};	//struct 없이 선언
-			printf("%d", Truck.Year); //2016 출력
+			Car_t Trucks[2] = {{4,'W', 2016},{6,'Y', 2012}};
+			Trucks[1].printInfo(); 
 		}
 		```
-		* . 과 -> 둘다 접근에 사용 가능
-		* 일반적인 자료형처럼
-			* 함수 반환형과 매개변수형에 사용 가능
-			* 포인터 사용 가능
-			* 배열 사용 가능
-			* 구조체 안 맴버 변수 선언 가능
-* ## 9-3 구조체와 클래스
-	* 객체 지향 프로그래밍(Object Oriented Programming)의 class 개념과 유사
-			* 필요한 여러 자료나 개념을 하나의 객체로 묶어서 사용.
-			* OOP class의 상속(Inheritance), 접근 제한 지정자(public, private, protected)등 차이점 탓에 완벽히 같은 개념은 아님.
-* ## -4 enum (열거형, Enumeration)
+		{% endraw %}
+* ## 9-4 enum (열거형, Enumeration)
 	* 특정한 값을 다른 이름으로 재선언
 		* 단순 값이 아닌 이름 표현을 통한 가독성 증가
 		* const같은 수정 방지 효과
-	* 
+		* c++에서 기본 문법상으로 enum 이름에 바로 접근할 수 없어 다음 방법등을 사용
+			* switch문을 통한 문자열 반환
+			* 배열 맵핑
+			* magic_enum 라이브러리 사용 (C++ 17 버전 이상)
+			{% raw %}
+			```c
+			enum EColor{	
+				COLOR_WHITE,
+				COLOR_BLACK,
+				COLOR_YELLOW
+			};
+			typedef enum EColor color_t; //enum도 typedef 가능!
+			
+			const char* GetColorName(color_t EnumColor){
+			//enum 문자열 반환함수
+				switch(EnumColor){
+				
+					case 0:
+						return "white";
+					case 1:
+						return "black";
+					case 2:
+						return "yellow";
+					default:
+						return "";
+				}
+			}
+			typedef struct
+			{
+				int Wheels;
+				color_t Color;
+				int Year;
+			}Car_t;
+			void printInfo(Car_t tempCar){
+					printf("%d %s %d", tempCar.Wheels, GetColorName(tempCar.Color), tempCar.Year);
+			}
+			int main(){
+				Car_t Trucks[2] = {{4,COLOR_WHITE, 2016},{6,COLOR_YELLOW, 2012}};
+				printInfo(Trucks[1]); //6 yellow 2012 출력
+			}
+			``` 
+			{% endraw %}
