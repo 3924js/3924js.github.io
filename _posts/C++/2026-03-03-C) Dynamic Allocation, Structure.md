@@ -1,4 +1,3 @@
-
 ---
 title: "C Language: 동적할당(Dynamic Allocation,"
 author: Jaeseong Kim
