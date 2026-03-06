@@ -1,7 +1,7 @@
 ---
 title: "C++: 포인터(Pointer) & 레퍼런스(Reference)"
 author: Jaeseong Kim
-date: 2026-03-0 12:00:00 +0800
+date: 2026-03-06 12:00:00 +0800
 categories: [C++, C++ Basics]
 tags: [C++, C++ Basics]
 ---
