@@ -322,23 +322,23 @@ tags: [C++, C++ Basics]
 			* 기존 클래스의 개념을 다른 클래스가 이어받을 수 있음.
 			* 물려주는 클래스가 부모 클래스(Parent Class), 물려받는 클래스가 자식 클래스(Child Class)
 			* 부모 클래스에 정의된 개념은 자식클래스에서 사용 가능하며, 자식 클래스는 추가적인 맴버 변수나 함수 정의가 가능.
-			```c++
-			#include <iostream>
-			using namespace std;
-			class Transportation{	//부모 클래스
-			public:
-				void Drive() {
-					cout << "Going to the City Hall" << endl;
-				}
-			};
-			class Taxi : public Transportation{//자식 클래스
+				```c++
+				#include <iostream>
+				using namespace std;
+				class Transportation{	//부모 클래스
+				public:
+					void Drive() {
+						cout << "Going to the City Hall" << endl;
+					}
+				};
+				class Taxi : public Transportation{//자식 클래스
 
-			};
-			int main() {
-				Transportation* A = new Taxi();	//상속받은 자식 클래스 객체를 부모클래스 포인터로 가리킴(업캐스팅)
-				A->Drive(); //시청으로 출발
-			}
-			```
+				};
+				int main() {
+					Transportation* A = new Taxi();	//상속받은 자식 클래스 객체를 부모클래스 포인터로 가리킴(업캐스팅)
+					A->Drive(); //시청으로 출발
+				}
+				```
 		* 추상화(Abstraction)
 			* 복잡한 내부 구현을 숨김으로서 필요한 기능만 드러나는 단순한 개념으로 변환
 			* 캡슐화와 유사하지만 데이터 보호와 구조의 단순화중 어느 부분에 초점을 맞추느냐에 따라 다음.
@@ -436,7 +436,7 @@ tags: [C++, C++ Basics]
 				}
 				```
 	* 클래스를 이용한 게임 직업 예시
-		```c+
+		```c++
 		//Adventure.h
 		class Adventure{//추상화 클래스
 			public:
@@ -455,7 +455,8 @@ tags: [C++, C++ Basics]
 				void useSkill() override;
 		};
 		```
-		```c+
+
+		```c++
 		//Adventure.cpp
 		#include <iostream>
 		#include <Adventure.h>
@@ -471,7 +472,8 @@ tags: [C++, C++ Basics]
 			cout << "Warrior shoots an arrow!" << endl;
 		}
 		```
-	```c+
+
+		```c++
 		//Adventure.cpp
 		#include <iostream>
 		#include <Adventure.h>
