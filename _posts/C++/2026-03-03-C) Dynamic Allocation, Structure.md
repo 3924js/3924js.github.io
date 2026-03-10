@@ -1,5 +1,5 @@
 ---
-title: "C Language: 동적할당(Dynamic Allocation,"
+title: "C Language: 동적할당(Dynamic Allocation), 구조체(Structure), typedef, 열거형(enum)"
 author: Jaeseong Kim
 date: 2026-03-03 12:00:00 +0800
 categories: [C++, C Language]
