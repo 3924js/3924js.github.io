@@ -474,7 +474,7 @@ tags: [C++, C++ Basics]
 		```
 
 		```c++
-		//Adventure.cpp
+		//main.cpp
 		#include <iostream>
 		#include <Adventure.h>
 		int main(){
