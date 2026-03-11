@@ -82,7 +82,7 @@ tags: [C++, C++ Basics, Resource Management, Smart Pointer, Memory]
 			}
 			```
 		* 또한 사용하지 않는데 정상적으로 해지되지 않는 메모리가 계속 쌓이게 되면, 사용가능한 메모리 용량이 줄어들며 성능을 잡아먹고 메모리 누수(Memory Leak)가 일어난다.
-		* C++에서는 메모리 공간을 보다 안정적으로 관리하고, new/delete를 사용하지 않는 자동적인 방식을 구현하기 위해 스마트 포인터(Smart Pointer)의 개념을 도입했다. 이 3가지 종류가 있으며, memory 라이브러리에 저장되어 있다.
+		* C++에서는 메모리 공간을 보다 안정적으로 관리하고, **new/delete를 사용하지 않는 자동적인 방식**을 구현하기 위해 스마트 포인터(Smart Pointer)의 개념을 도입했다. 이 3가지 종류가 있으며, memory 라이브러리에 저장되어 있다.
 			* ### 유니크 포인터(Unique Pointer, unique_ptr)
 				* 오직 유니크 포인터 자신만 소유할 수 있다. 다른 유니크 포인터가 소유하려고 한다면 컴파일 에러를 보인다..
 				* 복사가 불가능하며, std::move를 이용해 소유권을 다른 유니크 포인터로 이동할 수 있다.
@@ -231,13 +231,56 @@ tags: [C++, C++ Basics, Resource Management, Smart Pointer, Memory]
 						return 0; //순환 참조 없음. 객체 삭제, Destroyed! 출력
 					}
 					```
+		* 간단한 로그 출력 프로그램 예시
+			```c++
+			#include <iostream>
+			#include <memory>
+			using namespace std;
+			class Logger{
+			private:
+				int logCount;
+			public:
+				Logger(){
+					logCount = 0;
+				}
+				~Logger(){
+					cout << "Logger instance destroyed" << endl;
+				}
+				void logInfo(string message){
+					cout << "[info] " << message << endl;
+					logCount++;
+				}
+				void logWarning(string message){
+					cout << "[Warning] " << message << endl;
+					logCount++;
+				}
+				void logError(string message){
+					cout << "[Error] " << message << endl;
+					logCount++;
+				}
+				void showTotalLogs(){
+					cout << "Total logs: " << logCount << endl;
+				}
+			};
+			int main(){
+				//로그 생성기 생성
+				unique_ptr<Logger> logger = make_unique<Logger>();
+				//로그 출력
+				logger->logInfo("Actor Spawned");
+				logger->logWarning("Accessing potentially uninitialized object");
+				logger->logError("Index out of bound");
+				//로그 횟수 출력, 3
+				logger->showTotalLogs();
+				return 0;	//소멸자 호출, Logger instance destroyed 출력
+			}
+			```
 	* ### 얕은 복사(Sallow Copy)
-		* 포인터의 주소값만 복사하는 방식. 참조 형식의 전달과 유사하며, 복사 비용이 적다.
+		* 포인터의 **주소값만 복사**하는 방식. 참조 형식의 전달과 유사하며, 복사 비용이 적다.
 		* 스마트 포인터 시작 부분에서 언급했듯이, 포인터의 주소값으로 가리키는 위치의 객체가 원본 객체에 의해서 소멸되면 유효하지 않은 값을 가리키는 허상 포인터가 될 수 있음.
 	* ### 깊은 복사(Deep Copy)
-		* 포인터가 가리키는 클래스 객체의 값들을 새로운 메모리 영역에 완전히 복제하는 방식.
+		* 포인터가 가리키는 클래스 객체의 값들을 새로운 메모리 영역에 **완전히 복제**하는 방식.
 		* 복사 이후에는 완전히 다른 객체인 상태라, 원본의 삭제 여부와 상관없이 객체를 유지할 수 있지만, 한 객체에서의 수정 사항은 다른 쪽에 전달되지 않음.
-		```c++
+			```c++
 			#include <iostream>
 			using namespace std;
 			int main(){
@@ -254,7 +297,7 @@ tags: [C++, C++ Basics, Resource Management, Smart Pointer, Memory]
 			}
 			```
 	* ### 가비지컬렉션(Garbage Collection)
-		* 메모리 사용을 주기적으로 체크하여 사용되지 않는 데이터, 메모리를 자동으로 해제해주는 기능으로, Java, Python같은 다른 언어에서는 내장되어있는 기능이다.
+		* 메모리 사용을 주기적으로 체크하여 **사용되지 않는 데이터, 메모리를 자동으로 해제해주는 기능**으로, Java, Python같은 다른 언어에서는 내장되어있는 기능이다.
 		* C++에는 이 기능이 내장되어있지 않으며, 동적 할당된 메모리의 수동 해제, 스마트 포인터 사용, GC의 개별적인 구현 등을 통해 메모리를 관리한다. GC 구현에 쓸 수 있는 알고리즘은 여러가지가 있다. 장단점과 상황에 따라 다양한 GC 방식을 구현/사용할 수 있다.
 			* 참조 카운팅(Reference Counting): 공유 포인터에서 쓰인 기능과 동일한 방식이다. 참조된 횟수를 추적하여 참조되지 않을 때 메모리를 해제한다.
 			* 마크 앤 스윕(Mark & Sweep)
@@ -276,9 +319,62 @@ tags: [C++, C++ Basics, Resource Management, Smart Pointer, Memory]
 			* RF_BeginDestroyed: 메모리에서 실제로 해제되기 전까지의 작업을 담당하는 함수인 BeginDestroy()의 호출을 나타내는 플래그.
 			* RF_FinishedDestroyed: 메모리가 해제됬음을 알리는 FinishDestroy() 함수의 호출을 알리는 플래그.
 	* ### 언리얼 리플렉션(Unreal Reflection)
-		* 리플렉션(Reflection)
-		* 언리얼 엔진은 C++로 쓰여진 객체들 자체를 인식할 수 없으며, 일부 기능은 C++의 기본적인 기능을 넘어서서 작동하고 통합되야 함.
+		* 리플렉션(Reflection): 컴파일 시점에 정해진 정보가 아닌, **실행중에 동적으로** 프로그램 스스로의 정보를 **조사**하고 처리할 수 있는 기능, 코드를 코드를 통해 다루는 기능
+			* 자신의 구조에 대한 조사. (클래스, 필드, 메서드 등)
+			* 프로그램 구조 자체를 데이터처럼 다루어 반영.
+		* C++에는 리플렉션 기능이 따로 존재하지 않으며, 언리얼 엔진은 독립적인 리플렉션 시스템을 구축하여 사용함.
 			* 스코프 단위가 아닌 프레임 단위의 데이터 보존/관리.
 			* 블루프린트, 에디터등 작업 환경의 통합.
-		* 언리얼 엔진은 이 모든 작동하는 객체들을 UObject라는 단위로 다루게 되며, 
-		* 
+		* ### Unreal Header Tool(UHT)
+			* 작성된 소스코드를 컴파일 하기 전에 UObject 형태로 먼저 변환해주는 툴.
+			* 리플렉션 메크로를 클래스, 변수, 함수 등의 선언중 특정한 위치에 놓음으로서 UHT에서 인식하고 .generated 파일을 생성하도록 알림.
+				* UCLASS()
+					* 클래스 정의 앞에 위치
+					* 해당 클래스를 리플렉션에 등록.
+				* UPROPERTY(): 
+					* 맴버 변수 선언 앞에 위치.
+					* 변수를 리플렉션에 노출.
+				* UFUNCTION()
+					* 맴버 함수 선언 앞에 위치.
+					* 함수를 리플렉션에 노출.
+				* USTRUCT()
+					* 구조체 정의 앞에 위치.
+					* 구조체를 리플렉션에 등록.
+				* GENERATED_BODY()
+					* 클래스나 구조체 첫줄에 위치
+					* UHT에게 필요한 코드를 삽입할 위치를 알림.
+			* 액터 클래스의 헤더파일 예시
+				```c++
+				// Fill out your copyright notice in the Description page of Project Settings.
+
+				#pragma once
+
+				#include "CoreMinimal.h"
+				#include "GameFramework/Actor.h"
+				#include "MyActor.generated.h"
+
+				UCLASS()
+				class MYPROJECT2_API AMyActor : public AActor
+				{
+					GENERATED_BODY()
+					
+				public:	
+					// Sets default values for this actor's properties
+					AMyActor();
+
+					UFUNCTION(BlueprintCallable)
+					void NewFunction(int Val);
+
+					UPROPERTY(BlueprintReadOnly, Category = MyActor)
+					int Num;
+
+				protected:
+					// Called when the game starts or when spawned
+					virtual void BeginPlay() override;
+
+				public:	
+					// Called every frame
+					virtual void Tick(float DeltaTime) override;
+
+				};
+				```
