@@ -190,34 +190,34 @@ tags: [C++, C++ Basics, Overloading, Template, STL, Vector, Map, Find, Sort, Ite
 	* ### 탬플릿 클래스
 		* 함수를 일반화하는 것처럼 클래스도 일반화가 가능하다.
 		* 뒤에 나올 STL 컨테이너에서 많이 쓰이는 형태의 이용법이다.
-		```c++
-		#include <iostream>
-		using namespace std;
-		
-		template<typename T>	//템플릿 클래스
-		class temp{	
-		private:
-			T val;	//템플릿을 이용한 맴버 변수 선언
-		public:
-			temp(T input){	//템플릿 매개변수 활용
-				val = input;
+			```c++
+			#include <iostream>
+			using namespace std;
+			
+			template<typename T>	//템플릿 클래스
+			class temp{	
+			private:
+				T val;	//템플릿을 이용한 맴버 변수 선언
+			public:
+				temp(T input){	//템플릿 매개변수 활용
+					val = input;
+				}
+				T GetValue(){	//템플릿 반환형 활용
+					return val;
+				}
+				void Increment(){
+					val++;
+				}
+			};
+			int main(){
+				temp<int> X(15);	//int형 템플릿 클래스 생성
+				X.Increment();
+				cout << X.GetValue() << endl;	//16
+				temp<double> Y(3.14);	//double형 템플릿 클래스 생성
+				Y.Increment();
+				cout << Y.GetValue() << endl;	//4.14
 			}
-			T GetValue(){	//템플릿 반환형 활용
-				return val;
-			}
-			void Increment(){
-				val++;
-			}
-		};
-		int main(){
-			temp<int> X(15);	//int형 템플릿 클래스 생성
-			X.Increment();
-			cout << X.GetValue() << endl;	//16
-			temp<double> Y(3.14);	//double형 템플릿 클래스 생성
-			Y.Increment();
-			cout << Y.GetValue() << endl;	//4.14
-		}
-		```
+			```
 * ## 표준 탬플릿 라리브러리 (STL, Standard Template Library)
 	* C++에서 제공하는 많이 쓰이는 자료구조와 알고리즘, 기능들을 구현해놓은 라이브러리.
 	* 다양한 모듈이 개별적으로 존재하기 때문에, 필요에 따라 필요한 모듈만 포함시켜 사용하며, 여러 카테고리로 분류된다.
