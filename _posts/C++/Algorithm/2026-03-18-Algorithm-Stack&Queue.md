@@ -14,6 +14,7 @@ tags: [C++, Algorithm, Stack, Queue, Deque]
 		2. pop(): 마지막으로 넣은 자료를 삭제한다, 
 		3. top(): 마지막으로 넣은 자료를 얻는다.
 		4. empty(): 스택이 비어있는지 확인한다.
+
 		```c++
 		#include <iostream>
 		#include <stack>	//스택 라이브러리
@@ -43,7 +44,7 @@ tags: [C++, Algorithm, Stack, Queue, Deque]
 			cout << "\n\n스택이 비었는지 확인합니다: " << S.empty(); //스택 비었는지 확인하는 함수
 		}
 		```
-* ## 큐(Queue)	//먼저것이 중요
+* ## 큐(Queue)
 	*  스택과 유사하지만, 순서가 달리 **삽입 순서에 맞추어 나오는(First In First Out, FIFO)** 자료구조다. 프랑스어 단어 꼬리/줄(queue)에서 유래했다.
 		* A B C 순서로 삽입된다면, A B C 순서 그대로 삭제된다.
 	* 다음 함수들을 사용해 스택을 조작한다. 사용법은 스택과 유사하다:
@@ -54,6 +55,7 @@ tags: [C++, Algorithm, Stack, Queue, Deque]
 			* 스택에선 top의 반대인 bottom을 지원하진 않는다. 하나의 입구를 구현하려는 스택, 그리고 줄세우기를 구현하려는 큐의 목적 차이 때문이라 할 수 있다.
 			*  그래도 FIFO를 위해 사용하는 큐 특성상 쓸 일이 많지는 않을것이고, 사용해야 한다면 다른 자료구조가 더 적합할 수도 있다.
 		5. empty(): 스택이 비어있는지 확인한다.
+
 		```c++
 		#include <iostream>
 		#include <queue>	//큐 라이브러리
@@ -98,6 +100,7 @@ tags: [C++, Algorithm, Stack, Queue, Deque]
 		* pop_back(): 맨 뒤의 값을 제거한다.
 		* empty(): 비어있는지 확인한다.
 		* 벡터처럼 랜덤 접근과 반복자를 지원한다.
+
 		```c++
 		#include <iostream>
 		#include <deque>	//덱 라이브러리
@@ -158,6 +161,7 @@ tags: [C++, Algorithm, Stack, Queue, Deque]
 		}
 		```
 	* 벡터와 기본적인 사용법이 비슷하다. 그럼에도 내부 구조와 시간복잡도에서 약간의 차이가 있다. 용도에 맞게 사용하되, Deque를 사용할 정도면 우선 스택과 큐를 사용하는걸 고려해보자.
+	
 	|차이 | Vector | Deque|
 	|:------:|:-------:|:--------:|
 	|원소의 저장|연속된 메모리에 저장| 연속될 필요 없음|
