@@ -23,6 +23,7 @@ https://school.programmers.co.kr/learn/courses/30/lessons/133502#
     * 1 차이라면, 즉 순서에 맞는 재료면 스택에 쌓는다.
     * 아니면 스택을 초기화한다. 중간에 잘못된 재료가 끼어있으면, 그 전까지 있던 재료는 스택 윗재료가 빠져 접근이 열리는 상황이 없기에 쓸모가 없다.
 * 끝까지 반복한 후 answer를 반환한다.
+
 ```c++
 #include <string>
 #include <vector>
