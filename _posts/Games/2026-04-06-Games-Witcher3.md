@@ -15,19 +15,19 @@ tags: [Game, Inspection, Witcher]
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-crowd1.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-crowd1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>가까이 있으면 군중이 모두 보인다.</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-crowd2.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-crowd2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>거리가 멀어지면 렌더링되지 않는다.</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-landscape1.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-landscape1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>지형사물도 가까이에선 모두 보이지만,</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-landscape2.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-landscape2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>거리가 멀어지면 렌더링되지 않는다.</figcaption>
   </figure>
 </div>
@@ -37,11 +37,11 @@ tags: [Game, Inspection, Witcher]
 한편 요즘 자주 쓰이는 개념인 **절차적 생성은 따로 들어가지 않았다.** 나무나 물, 사물들을 보면 다르기보단 회전 혹은 사이즈정도만 어느정도 조절하여 배치된 모습을 볼 수 있다. 그래도 꽤나 밀도있고 신경써서 배치했기 때문에 월드가 비거나 어색해보이진 않는다.
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-same1.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-same1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>같은 꽃 패턴으로 반복한다.</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-same2.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-same2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>나무들의 모양이 다르지 않다.</figcaption>
   </figure>
 </div>
@@ -49,29 +49,29 @@ tags: [Game, Inspection, Witcher]
 사실적인 위쳐 세계의 몰입과 모험을 위해 사실적인 그래픽에 보다 초점을 맞춘 것으로 생각 된다. 이를 위해 전반적인 사물의 질감과 머티리얼은 기본으로 보기엔 밋밋하고 어색하다고 보일 수 있는 **높은 명도와 낮은 채도**를 주로 쓴 것으로 생각된다. 제일 빛이 강할 때인 정오에 벽돌과 지붕을 많이 볼수 있는 노비그라드 도시가 이를 잘 보여주는데, 사물들을 보면 전반적으로 많이 먼지앉은듯 색이 죽은듯한 회색/흰색의 느낌이 든다. 강한 햇빛의 반사를 반영했다고 평할수도 있겠지만, 그만큼 머티리얼 본연의 느낌이 약하다는 표현이기도 하겠다. 뒤에서 말하겠지만 이는 다양한 광원과 조합되어 다른 환경을 반영하는데 도움을 준다.
 <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-noon1.png" style="width:100%; aspect-ratio:4/2; object-fit:cover;">
+    <img src="/assets/img/260406-noon1.png" alt="" style="width:100%; aspect-ratio:4/2; object-fit:cover;">
   </figure>
   <figure>
-    <img src="/assets/img/260406-noon2.png" style="width:100%; aspect-ratio:4/2; object-fit:cover;">
+    <img src="/assets/img/260406-noon2.png" alt="" style="width:100%; aspect-ratio:4/2; object-fit:cover;">
   </figure>
 </div>
 
 **환경에 따른 질감의 변화**도 사실적인 경험을 더한다. 물에 빠졌다가 빠져나올 때 반사가 더 강해지고 기존의 텍스처가 덜 투영되는 젖은 느낌으로 변하고, 시간이 지남에 따라 원래대로 돌아온다. 이는 게임에서 많이 있을 수시로 물속을 들락거리고 수영하며 온갖 장소에서 구르는 캐릭터를 더 사실적으로 만들어준다.
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-leather1.png" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
+    <img src="/assets/img/260406-leather1.png" alt="" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
     <figcaption style="text-align: center;">가죽 젖기 전</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-leather2.png" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
+    <img src="/assets/img/260406-leather2.png" alt="" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
     <figcaption style="text-align: center;">가죽 젖은 후</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-plate1.png" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
+    <img src="/assets/img/260406-plate1.png" alt="" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
     <figcaption style="text-align: center;">판금 젖기 전</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-plate2.png" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
+    <img src="/assets/img/260406-plate2.png" alt="" style="width:100%; aspect-ratio:1/3; object-fit:cover;">
     <figcaption style="text-align: center;">판금 젖은 후</figcaption>
   </figure>
 </div>
@@ -79,11 +79,11 @@ tags: [Game, Inspection, Witcher]
 머리카락은 다른 게임들과 비슷하게 선들로 이루어진 텍스처를 몇개의 단으로 연결하는 방식을 사용했는데, 다른 게임들과 큰 차이를 보이진 않는다. 다만 그 움직임은 Nvidia Hairworks 옵션을 켰을 때 더 자연스럽게 움직이는 것을 볼 수 있는데, 긴 머리의 캐릭터의 움직임에서 특히 그렇다. 그러나 DLSS, RT와의 조합은 좋지 않은지, 같이 쓰면 계속 머리카락이 쉬지않고 움직이는 모습을 보여준다. 괜히 성능만 잡아먹는 것 같고 풍경을 볼일이 더 많아 나도 예전엔 끄고 게임했던걸로 기억한다.
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-hairworks-disabled.png" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+    <img src="/assets/img/260406-hairworks-disabled.png" alt="" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
     <figcaption>기본 머리 품질,<br>덩어리져있고, 보다 각진 모습이다.</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-hairworks-enabled.png" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+    <img src="/assets/img/260406-hairworks-enabled.png" alt="" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
     <figcaption>Nvidia Hairworks 사용,<br>세밀한 머리카락 묘사와 움직임이 들어간다.</figcaption>
   </figure>
 </div>
@@ -91,53 +91,53 @@ tags: [Game, Inspection, Witcher]
 전반적으로 빛이 있을 때를 중심으로 많이 설계되지 않았나 생각이 든다. 머티리얼의 질감과 색감과 함께, 빛이 있는 낮 시간대의 맵이나 도시지역은 선명하고 자연스러운 색을 많이 보여준다. 머티리얼에서 전반적으로 낮은 채도의 밋밋한 색감을 주로 사용하고, 이를 **주황색, 노란색등 **다양한 광원의 색을 이용**해 보충하는 구조를 보이는 것으로 보인다. 이는 보다 환경에 따라 변화하는 "살아있는" 세계의 느낌을 살려줄 것이다. 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-time06.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-time06.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
   </figure>
   <figure>
-    <img src="/assets/img/260406-time12.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-time12.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
   </figure>
   <figure>
-    <img src="/assets/img/260406-time20.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-time20.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
   </figure>
   <figure>
-    <img src="/assets/img/260406-time24.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-time24.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
   </figure>
 </div>
 
 한편 카메라의 세팅이 빛의 양에 따라 조절되는 자동노출은 없는 것 같다. 이는 동굴, 밤 시간대등 빛이 없을 때  사물의 형상이나 위치를 확인하는데 불편함을 만들고 특히 이 게임에서 적지 않은 비중을 차지하는 밤시간대나 동굴지역에서의 탐험을 성가시게 만든다. 횃불과 시야개선용 포션을 제공함으로서 해소한다는 점에서, 아마도 의도적인 사항일 수도 있겠다.
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-cave0.png" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+    <img src="/assets/img/260406-cave0.png" alt="" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
   </figure>
   <figure>
-    <img src="/assets/img/260406-cave1.png" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+    <img src="/assets/img/260406-cave1.png" alt="" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
   </figure>
 </div>
 
 지역이나 이펙트에 따라 사물이 왜곡되는 모습을 구현하기도 했는데, 스킬효과나 습지같은 제한적인 효과는 객체처럼 배치함으로서 구현한다. 환경 전체를 수정하지 않고도 부분적으로 분위기를 구현하는 역할을 한다. 한편, 스켈리게같은 군도지역이나 물속에선 카메라의 가시거리, 렌더링 방식을 차이두는 형식으로 전체적으로 효과를 적용한다. 스켈리게 군도에서의 효과 차이는 위에서 언급한 밋밋한 색감, 흐릿한 광원과 함께 해당 지역의 더 차가운 느낌을 표현하는데 일조한다.
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-effect1.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-effect1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption style="text-align: center;">NPC 이펙트</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-effect2.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-effect2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption style="text-align: center;">스킬 파티클+왜곡</figcaption>
   </figure>
 </div>
 <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-effect3.png" style="width:100%; aspect-ratio:4/2; object-fit:cover;">
+    <img src="/assets/img/260406-effect3.png" alt="" style="width:100%; aspect-ratio:4/2; object-fit:cover;">
     <figcaption style="text-align: center;">습지 안개, 몬스터 피격 이펙트</figcaption>
   </figure>
 </div>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-Islands1.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-Islands1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption style="text-align: center;">스켈리게 군도 절벽</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-Islands2.png" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260406-Islands2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption style="text-align: center;">스켈리게 군도 원경</figcaption>
   </figure>
 </div>
@@ -145,19 +145,19 @@ tags: [Game, Inspection, Witcher]
 추후에 추가된 **레이트레이싱과 DLSS**는 전반적인 퀄리티를 끌어올린다. 특히 부분적으로 점묘화처럼 흐릿하거나 블러처리된것 같이 보이는 일부 디테일들을 더 정확하고 깔끔하게 구현하는데 크게 기여한다. RT 혹은 DLSS한쪽만 활성화해도 개선을 보이지만, 둘이 합쳐졌을때의 결과물은 최고의 퀄리티를 보여준다. 다만 이는 작은 사물과 반사광, 각종 요소들이 빼곡히 차있는 풍경을 볼 때 도드라지는 편이고, 게임의 대부분을 차지할 **전투와 이동등에선 크게 주목받지 못할 요소**라 생각한다. 기존 그래픽도 지금봐도 좋은 양질의 결과물을 내기 위해 노력이 들어갔다는 반증일 것이다.
 <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px;">
   <figure>
-    <img src="/assets/img/260406-comp-FXAA.png" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
+    <img src="/assets/img/260406-comp-FXAA.png" alt="" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
     <figcaption style="text-align: center;">FXAA</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-comp-FXAA+RT.png" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
+    <img src="/assets/img/260406-comp-FXAA+RT.png" alt="" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
     <figcaption style="text-align: center;">FXAA + RT</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-comp-DLSS.png" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
+    <img src="/assets/img/260406-comp-DLSS.png" alt="" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
     <figcaption style="text-align: center;">DLSS</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260406-comp-RT+DLSS.png" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
+    <img src="/assets/img/260406-comp-RT+DLSS.png" alt="" style="width:100%; aspect-ratio:4/1; object-fit:cover;">
     <figcaption style="text-align: center;">DLSS + RT</figcaption>
   </figure>
 </div>
