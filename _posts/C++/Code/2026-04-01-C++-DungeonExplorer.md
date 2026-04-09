@@ -38,6 +38,7 @@ https://www.youtube.com/watch?v=GuemXqiNJm0&t=56s
 	3. 인벤토리를 확인한다.
 		* 가진 아이템을 확인하거나 장착/사용할 수 있다.
 ## 구조
+![image](/assets/img/260401-Relation.png)
 각자 구현할 영역은 간략히 다음처럼 나눠졌다.
 * 게임 매니저: 게임의 전반적인 진행을 관리한다. GameManager, GameFlowManager등이 들어간다.
 * 전투 매니저: 전투의 진행을 담당한다. BattleManager, BattleSupply, RandomManager등이 들어간다.
