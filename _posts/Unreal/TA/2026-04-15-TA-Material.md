@@ -5,7 +5,7 @@ date: 2026-04-15 12:00:00 +0800
 categories: [Unreal, TA]
 tags: [Unreal, TA, Material]
 ---
-
+[언리언 공식 문서: 물리 기반 머티리얼](https://dev.epicgames.com/documentation/unreal-engine/physically-based-materials-in-unreal-engine)
 ## 머티리얼(Material)
 * 물질을 나타내는 개념으로, 사물의 느낌, 질감등을 표현하는 정보를 저장한다. 
 * 객체에 적용되어 표면에 색이나 모양, 특수한 시각적 효과를 나타내는데 사용될 수 있다.
@@ -20,18 +20,55 @@ tags: [Unreal, TA, Material]
 		* 거칠기(Roughness)
 			* **표면의 거친 정도**를 나타낸다. 값이 낮으면 매끄러워 전반사 중심으로 일어나고, 높으면 거칠어져 난반사되고 반사광의 선명함이 줄어들고 표면에 퍼다.
 			* 유니티 엔진에서는 반대개념인 부드러움(Smoothness)로 대신한다. 방향만 반대일 뿐 개념 자체는 동일하다.
-		* 금속성(Metailc)
-			* 얼마나 금속성을 띄는지, 즉 **얼마나 반사하는지**를 나타내는 값이다. 값이 높으면 금속처럼 빛을 반사하고, 값이 낮으면 비금속처럼 반사하지 않는 모습을 보여준다.
+		* 금속성(Metallic)
+			* **얼마나 금속성을 띄는지를 나타낸다**. Roughness를 통해 만들어진 반사광의 성질에 많이 관여하는데, 값이 높으면 금속처럼 빛을 반사하고 전반사 위주의, 값이 낮으면 비금속처럼 반사하지 않는 모습을 보여준다.
 			* 반사하는 색상은 표면의 색, 알베도(Albedo)와 메탈릭 값의 곱을 반사하게 된다. 즉 표면 색상/텍스처에 영향을 받는다.
 			* 난반사되어 퍼지는 색은 알베도(Albedo)와  메탈릭이 아닌 만큼(1-metalic)의 곱으로 결정된다. 즉 난반사도 표면 색상의 영향을 받는다.
+			* Roughness값이 낮을 때, Metallic의 변화를 더 극적으로 볼 수 있다. 그렇다고 Roughness가 높은 거친 상태에서의 Metallic 변화가 의미 없는건 아니다. 샌딩처리된 금속, 노트북등에 사용되는 무광 알루미늄 마감등을 생각해보면 비슷할 것이다.
+			<div  style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+				<figure>
+					<img  src="/assets/img/260415-mr00.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 0.0<br>Metallic = 0.0 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr05.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 0.5<br>Metallic = 0.0 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr01.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 1.0<br>Metallic = 0.0 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr50.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 0.0<br>Metallic = 0.5 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr55.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 0.5<br>Metallic = 0.5 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr51.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 1.0<br>Metallic = 0.5 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr10.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 0.0<br>Metallic = 1.0 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr15.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 0.5<br>Metallic = 1.0 </figcaption>
+				</figure>
+				<figure>
+					<img  src="/assets/img/260415-mr11.png"  alt=""  style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+					<figcaption style="text-align: center;">Roughness = 1.0<br>Metallic = 1.0 </figcaption>
+				</figure>
+			</div>
 		* 반사성(Specular)
-			* 금속성과 마찬가지로 얼마나 반사를하는지를 나타내지만, 계산방식이 다르다.
-			* 금속성과 유사하지만, 과거 랜더링 방식들처럼 PBR이 아닌 곳에서 더 중요한 개념으로, 반사에 관여하면서도 메탈릭과는 계산 방식이 다르다. 
-			* 반사되고 디퓨즈되는 색상등 모두 표면의 색이 아닌 별도로 지정된 반사광 색상, 디퓨즈 색상에 따라 결정된다.
-			* 언리얼 5에서는 PBR을 기본으로 삼기에 메탈릭을 사용할 일이 더 많다.
+			* 금속성과 마찬가지로 얼마나 반사를하는지를 나타내지만, **비금속 영역에서의 반사**를 담당한다. 따라서 한 머티리얼 안에서 Metaillic과 동시에 사용하는데는 큰 효과를 못볼수도 있다.
+			* 언리얼 5에서는 PBR을 기본으로 삼기에 Metallic과 Roughness를 사용할 일이 더 많다. 보통 Specular는 0.5정도의 기본값으로 두고 수정할 일이 많이 없고, 세밀한 조정을 위해 가끔 건드릴 수 있다. 언리얼 공식문서도 **Specular가 없는 물질은 현실에 없기에 0.5는 유지**할 것을 조언한다. 다만 과거의 엔진이나 PBR에 기반하지 않는 프로젝트에선 Metallic 없이 금속성의 표현, 반사강도 조절까지 더 담당하는 역할이 많았을 것이다.
 	* Translucent 설정
 		* 투명도(Opacity)
-			* 얼마나 투명한지, 즉 얼마나 뒤의 빛이 투과되는 결정한다. 
+			* 얼마나 투명한지, 즉 얼마나 뒤의 빛이 투과되는 결정한다. 물과 유리같은 투명 재질을 만들 때 사용할 수 있다.
 			* 0에 가까울수록 투명하고, 1에 가까울수록 선명하다.
 
 * ### 머티리얼 인스턴스(Materital Instance, MI)
@@ -83,7 +120,7 @@ tags: [Unreal, TA, Material]
 		</figure>
 	</div>
 
-	* BlendMode를 Translucent로 바꾸고, 프레넬 렌즈의 효과를 일으키는 Fresnel 노드를 Oneminus 노드로 뒤집어 Opaque에 넣어주면 보이는 윤곽선쪽/보이는 각도가 수직보단 사선/평행에 가까울수록 투명해지는, 중심만 뚜렷히 보이도록 할 수 있다. power노드를 사용해 제곱하여 소수점 값의 옅은 부분을 더 옅게 만들어줬다.
+	* BlendMode를 Translucent로 바꾸고, 프레넬 렌즈의 효과를 일으키는 Fresnel 노드를 Oneminus 노드로 뒤집어 Opacity에 넣어주면 보이는 윤곽선쪽/보이는 각도가 수직보단 사선/평행에 가까울수록 투명해지는, 중심만 뚜렷히 보이도록 할 수 있다. power노드를 사용해 제곱하여 소수점 값의 옅은 부분을 더 옅게 만들어줬다.
 	<div  style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
 		<figure>
 			<img  src="/assets/img/260415-fresnel.png"  alt=""  style="width:100%; aspect-ratio:4/3; object-fit:cover;">
