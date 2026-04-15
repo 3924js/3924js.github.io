@@ -1,7 +1,7 @@
 ---
 title: "TA: 머티리얼(Material)"
 author: Jaeseong Kim
-date: 2026-04-01 12:00:00 +0800
+date: 2026-04-15 12:00:00 +0800
 categories: [Unreal, TA]
 tags: [Unreal, TA, Material]
 ---
