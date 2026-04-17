@@ -28,7 +28,7 @@ using namespace std;
 int main()
 {
     //map<key자료형, value 자료형>, 선언과 동시에 초기화도 가능
-    map<string, int> HR = {{"CEO", 1}};
+    map<string, int> HR = {% raw %}{{"CEO", 1}}{% endraw %};
 
     //[]를 이용한 값 추가, 뒤죽박죽 넣어도 순서대로 정렬된다.
     HR["IT"] = 3;
