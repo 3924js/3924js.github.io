@@ -12,13 +12,14 @@ tags: [Unreal, TA, Material ,Procedural Shader]
 * 같은 이미지나 패턴을 만들기 위해 이미지를 저장후 불러와 쓸수도 있고, 프로시듀얼 쉐이더로 제작하여 사용할 수도 있다. 전자의 경우 메모리에 저장하는 것이기에 드로우콜, 즉 메모리 통신의 비중이 더 늘어나고, 후자의경우 즉석에서 과정으로 만들어지기에 연산 부하가 더 증가한다고 볼 수 있다. 어느쪽이 더 좋다라기보단 장단점의 차이라 할 수 있겠다.
 	* 만든 프로시듀얼 쉐이더의 결과물을 텍스처 파일로 저장하여 사용할 수도 있다.
 ## 예시 1: 직물패턴
-TextureCoordinate노드에 Filter노드를 연결한다. U 혹은 V값만 남긴 후 Modulo를 이용해 간격을 분할하고 Step으로 남은 값들을 1로 강화하면 줄무늬 모양을 만들 수 있다.
+패션 상품에서 많이 보이는 반복적인 직물 패턴을 만들어보자.
+TextureCoordinate노드에 Mask노드에 연결한다. U 혹은 V값만 남긴 후 Modulo를 이용해 소수점으로 나누어주면 나머지로 남는 값에 의해 간격에 따라 분할된다. Step으로 일정 값 이하는 0으로, 더 큰 값은 1로 강화하면 뚜렷한 줄무늬 모양을 만들 수 있다.
 ![image](/assets/img/260420-fabric1.png)
 둘을 Subtract로 빼주면 정사각형의 배치를 얻을 수 있다.
 ![image](/assets/img/260420-fabric2.png)
 한편 Modulo로 얻은 스트라이프 패턴에서 Step전에 Add로 합치면 대각선으로 점점 짙어지는 TextureCoordinate와 유사하지만 그리드로 배열된 패턴을 얻을 수 있다.
 ![image](/assets/img/260420-fabric3.png)
-이를 Step에 적용하면 모서리에만 있는 삼각형을 얻을 수 있다.
+이를 아까처럼 Step에 적용하면 모서리에만 있는 삼각형을 얻을 수 있다.
 ![image](/assets/img/260420-fabric4.png)
 비슷하게 응용하여 더 큰 삼각형에서 작은 삼각형을 Subtract로 뺴주면 대각선의 직선을 얻는다.
 ![image](/assets/img/260420-fabric5.png)
@@ -33,8 +34,9 @@ TextureCoordinate노드에 Filter노드를 연결한다. U 혹은 V값만 남긴
 		<figcaption style="text-align: center;">상자에 적용된 직물패턴</figcaption>
 	</figure>
 </div>
-## 예시 2: 골인 지점
-이전 방법과 유사하게 Mask와 Module로 스트라이프 패턴을 만든다. TextureCoordinate 전에 Panner와 연결하고 Speed에 값을 넣으면, 프로시주얼 쉐이더에서도 움직이는 모습을 만들어낼 수 있다.
+## 예시 2: 이벤트 구역
+이번엔 원형의 이벤트 구역에서 존재를 알리는 위로 솟는 효과를 만들어보자.
+이전 방법과 유사하게 Mask와 Module로 스트라이프 패턴을 만든다. TextureCoordinate에서 Panner와 연결하고 Speed에 값을 넣으면 UV값을 실시간으로 변화시켜 프로시주얼 쉐이더에서도 움직이는 모습을 만들어낼 수 있다.
 ![image](/assets/img/260420-Eventzone1.gif)
 Step을 이용해 스트라이프 패턴을 뚜렷하게 만든다. 한편 mask로 G값만 받은 후 Multiply로 합치면 위로 갈수록 흐려지는 효과를 연출할 수 있다. Power를 이용해 이 흐려지는 연출을 더 확실히 적용한다.
 ![image](/assets/img/260420-Eventzone2.gif)
