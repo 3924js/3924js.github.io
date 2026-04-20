@@ -20,15 +20,20 @@ tags: [Unreal, TA, Material ,Procedural Shader]
 
 TextureCoordinate노드에 Mask노드에 연결한다. U 혹은 V값만 남긴 후 Modulo를 이용해 나누는 값에 따라 나머지로 남는 값에 의해 따라 타일처럼 분할된다. 
 ![image](/assets/img/260420-fabric1.png)
+
 Step으로 일정 값 이하는 0으로, 더 큰 값은 1로 대체하면 뚜렷한 줄무늬 모양을 만들 수 있다. 둘을 Subtract로 빼주면 정사각형의 배치를 얻을 수 있다.
 ![image](/assets/img/260420-fabric2.png)
+
 한편 Modulo로 얻은 스트라이프 패턴에서 Step전에 Add로 합치면 대각선으로 점점 짙어지는 TextureCoordinate와 유사하지만 그리드로 배열된 패턴을 얻을 수 있다.
 ![image](/assets/img/260420-fabric3.png)
+
 이를 아까처럼 Step에 적용하면 모서리에만 있는 삼각형을 얻을 수 있다.
 ![image](/assets/img/260420-fabric4.png)
+
 비슷하게 응용하여 더 큰 삼각형에서 작은 삼각형을 Subtract로 뺴주면 대각선의 직선을 얻는다.
 ![image](/assets/img/260420-fabric5.png)
-이를 모두 합치면 코드나 가방에서 많이 볼법한 직물 패턴인 하운드투스가 만들어진다. 완성한 패턴을 BaseColor에 연결해주고 나무패턴 2개를 수직으로 겹치는 방법으로 Roughness를 약간 조정해 직물의 거친 느낌을 따라해보았다. 처음의 TextureCoordinate에서 UTiling/VTiling을 조절하면 직물 패턴의 밀도를 조절할 수 있다. 현재는 UTiling/VTiling을 3으로 사용해 총 6번씩 반복된다.
+
+이를 모두 합치고 완성한 패턴을 BaseColor에 연결해주면, 코드나 가방에서 많이 볼법한 직물 패턴인 하운드투스가 만들어진다. 처음의 TextureCoordinate에서 UTiling/VTiling을 조절하면 직물 패턴의 밀도를 조절할 수 있다. 현재는 UTiling/VTiling을 3으로 사용해 총 6번씩 반복된다.
 <div  style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
 	<figure>
 		<img  src="/assets/img/260420-fabric6.png"  alt=""  style="width:100%; aspect-ratio:4/3; object-fit:cover;">
@@ -39,6 +44,25 @@ Step으로 일정 값 이하는 0으로, 더 큰 값은 1로 대체하면 뚜렷
 		<figcaption style="text-align: center;">상자에 적용된 직물패턴</figcaption>
 	</figure>
 </div>
+
+이대로는 패턴이 밋밋하니 직물 특유의 실이 얽혀있는 효과를 추가해보자. TextureCoordinate노드에서 UV성분을 마스크로 분리, 한쪽만 길게 늘어뜨리기 위해 Multiply로 큰 수를 곱해줬다.
+![image](/assets/img/260420-fabric8.png)
+
+이를 Append로 합쳐서 2차원 벡터로 만들어주고, 노이즈 함수에 넣기 위해선 Vector3여야하니 Append로 0을 붙여 3차원 벡터로 만들어준다. 노이즈 함수에 넣어주면 이전에 Multiply값에 의해 한쪽으로 늘어진 노이즈 패턴이 나타난다. 노이즈 함수는 기본인 Simplex에 스케일값만 10배로 만들어 패턴을 더 작고 치밀하게 실에 적합한 모습으로 만들어줬다.
+![image](/assets/img/260420-fabric9.png)
+
+가로 세로로 나뉜 패턴을 Add로 합쳐준다. 0에서 1까지의 범위를 가지는 것을 2개 더했기 때문에 0에서 2까지인데, 범위를 되돌리기위해 절반으로 나누고 전체적으로 거칠기를 유지하기위해 0.4를 더한 후 Roughness에 연결해줬다. 한편 Normal에는 -1 부터 1까지의 범위의 값이 들어가야하기에 1만 빼준 후, Append를 이용해 Normal에 넣을 수 있는 3차원 벡터로 만들어 연결해줬다. 최종 결과물에선 전보다 실같이 갈라지고 얽혀있는 질감도 느낄 수 있다. 특히 사선에서 빛이 들어올 때 잘 느껴진다.
+<div  style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+	<figure>
+		<img  src="/assets/img/260420-fabric10.png"  alt=""  style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+		<figcaption style="text-align: center;">Roughness와 Normal까지 연결된 모습 </figcaption>
+	</figure>
+	<figure>
+		<img  src="/assets/img/260420-fabric11.png"  alt=""  style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+		<figcaption style="text-align: center;">실의 얽힘이 보이는 직물패턴</figcaption>
+	</figure>
+</div>
+
 
 ## 예시 2: 이벤트 구역
 이번엔 원형의 이벤트 구역에서 존재를 알리는 위로 솟는 효과를 만들어보자.
