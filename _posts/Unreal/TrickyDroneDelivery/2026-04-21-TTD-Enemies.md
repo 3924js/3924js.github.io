@@ -127,7 +127,7 @@ protected:
 
 	FVector Base;
 	AActor* TargetDrone;
-	bool bIsChasing;
+	bool IsChasing;
 	FTimerHandle DetectionTimer;
 	bool CanAttack;
 	FTimerHandle AttackTimer;
@@ -160,13 +160,10 @@ protected:
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Engine/OverlapResult.h"
-#include "CrowAIController.h"
 #include "Drone.h"
 #include "Holdable.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "BehaviorTree/BlackboardComponent.h"
-#include "Kid.h"
 
 // Sets default values
 ACrow::ACrow()
@@ -179,8 +176,6 @@ ACrow::ACrow()
 	MeshComp->SetupAttachment(RootComponent);
 	MovementComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComp"));
 	MovementComp->SetUpdatedComponent(SphereComp);
-	AIControllerClass = ACrowAIController::StaticClass();
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
     AttackInterval = 2.0f;
 
 }
@@ -188,10 +183,6 @@ ACrow::ACrow()
 // Called when the game starts or when spawned
 void ACrow::BeginPlay()
 {
-	Super::BeginPlay();
-	Base = GetActorLocation();
-
-    AAIController* AIC = Cast<AAIController>(GetController());
     Super::BeginPlay();
     Base = GetActorLocation();
     bIsChasing = false;
@@ -247,14 +238,14 @@ void ACrow::CheckTargetCondition(){
 
         if (bHit && Hit.GetActor() == Drone->GetHoldableActor()) {
             TargetDrone = Drone;
-            bIsChasing = true;
+            IsChasing = true;
             return;
         }
     }
 
     //Failed to Find
     TargetDrone = nullptr;
-    bIsChasing = false;
+    IsChasing = false;
 }
 
 void ACrow::SetBase() {
@@ -284,7 +275,7 @@ void ACrow::ResumeAttack()
 void ACrow::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-    if (bIsChasing)
+    if (IsChasing)
     {
         if (!CanAttack) return;
         AActor* Target = Cast<ADrone>(TargetDrone)->GetHoldableActor();
@@ -309,7 +300,305 @@ void ACrow::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 ```
+크게 몇가지 기능이 있다. 시작되면 Base에 스폰됬던 위치를 저장해놓고, 일정 시간마다 드론이 일정 거리 내로 진입했는지 그리고 LineTrace가 성공하는지 확인한다. 프레임마다 수준으로 많이 확인해야 할정도는 아니라 판단, 해당 시간은 0.2로초 설정해두었다. 이 성공 여부에 따라 IsChasing 값을 결정한다. 이 값에 따라 Tick()에서는 실제 행동이 이루어진다. true이면 대상인 드론의 상자를 향해 움직이고, 충돌시 데미지를 주고 일정시간동안 멈춘다. 플레이어가 Base로부터 일정 거리 안에 없으면 Base로 돌아간다.
+
+![image](/assets/img/260421-crow.gif)
+
+적절한 까마귀 메쉬를 구하지 못했기에 일단 임시로 메쉬를 넣어줬다. 확인을 위해 넣어놓은 파란색 영역에 상자를 가지고 들어가면 추적하고, 아닐경우 제자리로 돌아가는 모습이다.
 
 ## 물방울 구현
+다음으로 꼬마를 구현해야 하는데, 물방울을 먼저 구현해주자. 충돌하면 사라지는데, 충돌 대상이 상자면 데미지를 주어야 한다. 충돌하지 않더라도 시간이 지나면 부하 방지를 위해 스스로 사라지도록 만들어보자.
+```c++
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "DamageCollider.generated.h"
+
+class UStaticMeshComponent;
+class UProjectileMovementComponent;
+
+UCLASS()
+class TRICKYDRONEDELIVERY_API ADamageCollider : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	ADamageCollider();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ADamageCollider)
+	UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ADamageCollider)
+	UProjectileMovementComponent* ProjectileComp;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = DamageCollider)
+	float Lifespan;
+	FTimerHandle LifeTimer;
+
+	void EndLifeTimer();
+	
+	UFUNCTION()
+	void OnCollision(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+};
+```
+```c++
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "DamageCollider.h"
+#include "Holdable.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/StaticMeshComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+
+// Sets default values
+ADamageCollider::ADamageCollider()
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
+    RootComponent = MeshComp;
+
+    ProjectileComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
+    ProjectileComp->InitialSpeed = 1000.0f;
+    ProjectileComp->MaxSpeed = 1000.0f;
+    ProjectileComp->bRotationFollowsVelocity = true;
+}
+
+// Called when the game starts or when spawned
+void ADamageCollider::BeginPlay()
+{
+	Super::BeginPlay();
+    GetWorld()->GetTimerManager().SetTimer(LifeTimer, this, &ADamageCollider::EndLifeTimer, Lifespan, false);
+    MeshComp->OnComponentHit.AddDynamic(this, &ADamageCollider::OnCollision);
+}
+
+void ADamageCollider::EndLifeTimer()
+{
+    GetWorld()->GetTimerManager().ClearTimer(LifeTimer);
+    Destroy();
+}
+
+void ADamageCollider::OnCollision(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Waterball Collided!"));
+    AHoldable* HoldableActor = Cast<AHoldable>(OtherActor);
+    if (IsValid(HoldableActor)) {
+        UGameplayStatics::ApplyDamage(HoldableActor, 1, nullptr, this, UDamageType::StaticClass());   
+    }
+    Destroy();
+}
+```
+충돌시에는 OnCollision()이 호출되어 상자면 ApplyDamage()를 호출하고, 어디에 충돌하든 파괴된다. LifeTimer가 끝나도 파괴되도록 해놨는데, EndLifeTimer가 호출되며 파괴된다. 간단하게 쓸 머티리얼도 만들어서 씌워줬다. 당장은 물보다는 바다나 강의 표면같은 느낌이 들기도 한다.
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+  <figure>
+    <img src="/assets/img/260421-water.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <figcaption>WaterBall의 머티리얼 그래프</figcaption>
+  </figure>
+  <figure>
+    <img src="/assets/img/260421-water.gif" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <figcaption>레벨에 배치된 WaterBall</figcaption>
+  </figure>
+</div>
+
 ## 물총꼬마 구현
-## 이번의 경험
+투사체인 물방울이 구현됬으니 돌아다닐 꼬마의 차례이다. 스폰된 위치에서 일정 범위를 무작위적으로 돌아다니고, 일정 거리 안에 들어오면 플레이어에게 물방울을 발사한다. 까마귀와 유사하지만 지상에서만 돌아다니고 원거리로 공격하는 차이정도이니 구현 내용은 크게 다르지 않다.
+```c++
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "Kid.generated.h"
+
+class ADamageCollider;
+class ADrone;
+UCLASS()
+class TRICKYDRONEDELIVERY_API AKid : public ACharacter
+{
+	GENERATED_BODY()
+
+public:
+	// Sets default values for this character's properties
+	AKid();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float DetectionInterval;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float SearchRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float WanderingRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float ArrivalDistance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float FireRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float ProjectileSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	float FireLead;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	FVector SpawnOffset;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Kid)
+	TSubclassOf<class ADamageCollider> ProjectileActor;
+
+	FVector Base;
+	FVector Destination;
+	ADrone* TargetDrone;
+	FTimerHandle DetectionTimer;
+	FTimerHandle AttackTimer;
+	
+	bool IsAttacking;
+	void FireProjectile();
+	void CheckTargetCondition();
+	FVector GetRandomLocation();
+};
+```
+```c++
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Kid.h"
+#include "DamageCollider.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Drone.h"
+
+// Sets default values
+AKid::AKid()
+{
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+// Called when the game starts or when spawned
+void AKid::BeginPlay()
+{
+	Super::BeginPlay();
+	Base = GetActorLocation();
+	Destination = GetRandomLocation();
+	IsAttacking = false;
+	DrawDebugSphere(GetWorld(), Base, WanderingRange, 32, FColor::Magenta, false, 60);
+    GetWorld()->GetTimerManager().SetTimer(DetectionTimer, this, &AKid::CheckTargetCondition, DetectionInterval,true);
+}
+// Called every frame
+void AKid::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+    if (IsAttacking) {
+        DrawDebugLine(GetWorld(), GetActorLocation(), TargetDrone->GetActorLocation(), FColor::Red, false, 0.1);
+    }
+    else {
+        if ((GetActorLocation() - Destination).Length() <= ArrivalDistance) {
+            Destination = GetRandomLocation();
+        }
+        else {
+            GetMovementComponent()->AddInputVector((Destination - GetActorLocation()).GetSafeNormal());
+        }
+    }
+}
+
+// Called to bind functionality to input
+void AKid::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+FVector AKid::GetRandomLocation()
+{
+	FVector Direction = FMath::VRand();
+	Direction.Z = 0;
+	float Distance = FMath::FRandRange(0, WanderingRange);
+	FVector NewLocation = Base + Direction * Distance;
+	return NewLocation;
+}
+
+void AKid::FireProjectile()
+{
+    if (!IsValid(TargetDrone) || !ProjectileActor) return;
+
+    FVector StartLocation = GetActorLocation() + SpawnOffset;
+    FVector TargetLocation = TargetDrone->GetActorLocation() + TargetDrone->GetVelocity() * FireLead;
+
+    FVector OutVelocity;
+    bool bSuccess = UGameplayStatics::SuggestProjectileVelocity(this, OutVelocity, StartLocation, TargetLocation, ProjectileSpeed, false, 0.0f, 0.0f, ESuggestProjVelocityTraceOption::DoNotTrace);
+
+    if (!bSuccess) return;
+
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.Owner = this;
+
+    ADamageCollider* Projectile = GetWorld()->SpawnActor<ADamageCollider>(ProjectileActor, StartLocation,OutVelocity.Rotation(), SpawnParams);
+
+    if (IsValid(Projectile)) {
+        Projectile->GetComponentByClass<UProjectileMovementComponent>()->Velocity = OutVelocity;
+    }
+}
+
+void AKid::CheckTargetCondition() {
+    TArray<AActor*> OverlappedActors;
+    UKismetSystemLibrary::SphereOverlapActors(
+        GetWorld(), Base, SearchRange,
+        TArray<TEnumAsByte<EObjectTypeQuery>>(),
+        ADrone::StaticClass(),
+        TArray<AActor*>{ this },
+        OverlappedActors
+    );
+    DrawDebugSphere(GetWorld(), GetActorLocation(), SearchRange, 32, FColor::Cyan, false, DetectionInterval);
+    for (AActor* Actor : OverlappedActors) {
+        ADrone* Drone = Cast<ADrone>(Actor);
+        if (!IsValid(Drone) || !Drone->GetIsHolding()) continue;
+
+        FHitResult Hit;
+        FCollisionQueryParams TraceParams;
+        TraceParams.AddIgnoredActor(this);
+        TraceParams.AddIgnoredActor(Drone);
+
+        bool bHit = GetWorld()->LineTraceSingleByChannel(
+            Hit, GetActorLocation(),
+            Drone->GetHoldableActor()->GetActorLocation(),
+            ECC_Visibility, TraceParams
+        );
+
+        if (bHit && Hit.GetActor() == Drone->GetHoldableActor()) {
+            TargetDrone = Drone;
+            if (!IsAttacking) {
+                IsAttacking = true;
+                GetWorld()->GetTimerManager().SetTimer(AttackTimer, this, &AKid::FireProjectile, FireRate, true);
+            }
+            //IsAttacking = true;
+            return;
+        }
+    }
+
+    //Failed to Find
+    TargetDrone = nullptr;
+    IsAttacking = false;
+    GetWorld()->GetTimerManager().ClearTimer(AttackTimer);
+}
+```
+Crow에서는 IsChasing을 이용해 Tick에서 계속 이동을 넣어줬지만,Kid는 사격을 일정 시간간격마다 반복하는 구조로 만들어 Tick에서 처리하지 않고 CheckTargetCondition()에서 타이머의 설정과 해제에 따라서 공격하게 된다. 사격에 있어서는 그냥 쏘면 투사체가 잘 맞지 않기 때문에 드론의 속도에 따라 리드값을 조금 주었는데, 영역 안에 접근 자체를 지양하는 플레이를 위해서는 빗나가기 보단 잘 맞추도록 만드는게 더 적합할 것으로 생각된다.
+메쉬는 전에 생성해놓은 꼬마 모델을 넣어줬다. 확인을 위해 넣어둔 보라색 영역 안에서 랜덤한 좌표로 계속 돌아다니며, 들어간 드론이 상자를 가지고 있으면 쏘는 것을 볼 수 있다.
+![image](/assets/img/260421-kid.gif)
+## 이번의 경험: 적 난이도 조절하기
+지금 적들의 동작에 필요한 속도, 탐색 범위, 사거리등 여러 요소들을 에디터에서 수정할 수 있도록 만들어두었는데, 플레이에 적합하도록 적절한 움직임과 행동으로 난이도를 만들어내는 것은 많은 시간을 필요로 하는 일인 것 같다. 당장은 동작하는 기초적인 틀은 갖추어졌으니 추가적인 조정은 폴리싱의 영역이긴 하겠지만, 의도대로, 그리고 디테일하게 조정될수록 결과물의 퀄리티에 좋은 영향을 미칠것이다.
