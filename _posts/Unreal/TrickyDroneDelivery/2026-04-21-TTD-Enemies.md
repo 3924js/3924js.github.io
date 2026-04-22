@@ -3,7 +3,7 @@ title: "TrickyDroneDelivery: 적 구현 - 까마귀, 물총꼬마"
 author: Jaeseong Kim
 date: 2026-04-21 8:00:00 +0800
 categories: [Unreal, Project]
-tags: [Unreal, Project, GameMode, GameState]
+tags: [Unreal, Project]
 ---
 이전에는 물체를 들 수 있는 기능과, 들었을 때의 물리, 파괴 상호작용을 구현했다. 그 상자들을 들어서 단순히 배달만 하면 재미가 없을 것이다. 이번엔 배달과정을 방해할 적 2종류를 구현해보자. 가만히 앉아있다가 배달을 방해하러 올 까마귀와 드론을 향해 물을 발사할 개구진 꼬마이다.
 ## TakeDamage기반으로 변경
