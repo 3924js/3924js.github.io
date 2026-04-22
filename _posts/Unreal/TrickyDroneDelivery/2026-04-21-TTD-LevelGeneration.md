@@ -1,7 +1,7 @@
 ---
 title: "TrickyDroneDelivery: 랜덤 레벨 생성-GameMode, GameState"
 author: Jaeseong Kim
-date: 2026-04-21 8:00:00 +0800
+date: 2026-04-22 8:00:00 +0800
 categories: [Unreal, Project]
 tags: [Unreal, Project, GameMode, GameState]
 ---
