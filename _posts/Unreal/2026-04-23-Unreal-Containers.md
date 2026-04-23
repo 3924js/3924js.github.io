@@ -6,16 +6,16 @@ categories: [Unreal, Project]
 tags: [Unreal, Project, Container, TArray, TMap, TSet]
 ---
 ## TObjectPtr<>
-* UE4까지 존재하던 원시 포인터 (UObject*)를 대체하기 위해 추가된 탬플릿 기반의 포인터이다.
-    * 지연 로딩(Lazy Loading): TObjectPtr를 사용해 선언된 데이터는 실제로 필요하게 된 떄 메모리에 로딩된다. 다른 언어에서 있는 지연 평가(Lazy Evaluation)과 유사한 개념으로, 한번에 과한 메모리 부하를 줄여주는 한편, 간단한 호출이나 선언의 경우에는 불필요한 복잡함일 수도 있다.
+* UE4까지 존재하던 원시 포인터 (UObject*)를 대체하기 위해 추가된 템플릿 기반의 포인터이다.
+    * 지연 로딩(Lazy Loading): TObjectPtr를 사용해 선언된 데이터는 실제로 필요하게 된 때 메모리에 로딩된다. 다른 언어에서 있는 지연 평가(Lazy Evaluation)과 유사한 개념으로, 한번에 과한 메모리 부하를 줄여주는 한편, 간단한 호출이나 선언의 경우에는 불필요한 복잡함일 수도 있다.
     * 엑세스 트래킹(Access Tracking): 어디에서 데이터가 호출되는지 GC와 연계되어 더 정밀한 측정을 제공한다. 간단한 지역변수의 경우 지연 로딩과 마찬가지로 불필요한 기능일 수도 있다.
     * 지역 변수/짧은 수명이 확실한 경우에는 원시 포인터를 사용해도 무방하며, UPROPERTY()헤더가 붙는다면 TObjectPtr을 사용하는게 좋을 것이다.
-* 실제 출시품으로 패키징할 떄는 내부적으로 원시포인터로 변환되기에 의미 없다. 위 제공되는 기능들도 단순 프로그램을 실행하는데 있어서는 필요없기에 다 사라지며, 프로그램의 성능을 목적으로 하는게 아닌 개발과정에서의 관리가 주 목적이라 봐야한다.
-* TObjectPtr<>을 반복문에서 호출할 떄는 auto* 대신 auto&가 주소값의 복사 로직이 빠지기에 성능에 더 좋다.
+* 실제 출시품으로 패키징할 때는 내부적으로 원시포인터로 변환되기에 의미 없다. 위 제공되는 기능들도 단순 프로그램을 실행하는데 있어서는 필요없기에 다 사라지며, 프로그램의 성능을 목적으로 하는게 아닌 개발과정에서의 관리가 주 목적이라 봐야한다.
+* TObjectPtr<>을 반복문에서 호출할 때는 auto* 대신 auto&가 주소값의 복사 로직이 빠지기에 성능에 더 좋다.
 
 ## TSubclassOf<>
-* 클래스의 유형 정보를 담기 위해 사용하는 탬플릿 클래스다.
-* UClass* 와 비슷하게 클래스에 대한 하드 레퍼런스를 제공하는데, UCLass*는 어떤 클래스나 들어갈 수 있지만, TSubclassOf<>는 특정한 클래스만 가능하도록 제한시켜준다.
+* 클래스의 유형 정보를 담기 위해 사용하는 템플릿 클래스다.
+* UClass* 와 비슷하게 클래스에 대한 하드 레퍼런스를 제공하는데, UClass*는 어떤 클래스나 들어갈 수 있지만, TSubclassOf<>는 특정한 클래스만 가능하도록 제한시켜준다.
 * 탄환 생성등 특정한 클래스를 미리 할당해놔야 하는 데이터에 많이 사용된다.
 
 ## TArray<>
@@ -65,7 +65,7 @@ tags: [Unreal, Project, Container, TArray, TMap, TSet]
 * C++의 컨테이너들처럼 반복자를 지원하는데, 언리얼 버전인 TIterator를 제공한다. for문 처럼 맥락이 명백한 경우라면 auto로 할당받아 편하게 사용할 수 있겠다.
 * 위 3개 배열 모두 저장을 위해 자료가 없어도 미리 메모리를 할당해놓는 슬랙(Slack)을 가지게 된다. Compact로 슬랙을 컨테이너 끝으로 몰아놓을 수 있고, 끝단의 슬랙들을 제거하는 Shrink()를 함께 사용해 메모리 효율을 높일 수 있다.
 ## 간단한 인벤토리 예시
-데이터 테이블과 조합하면 효율적인 인벤토리를 구현할 수 있다. 아이템 객체들을 직접 가지고 있는 경우보다 아이템의 코드만 컨테이너에 가지고 있다가 인벤토리나 아이템을 불러올 때 테이블을 참조하는 식이다. TMap을 선택하면 자동정렬된, 아이템 코드와 갯수로 이루어진 효율적인 인벤토리를 제공할것이고, TArray를 사용하면 아이템이 각각의 인벤토리 칸을 차지하는 자연스러운 구조를 만들 수도 있을 것이다. 지금은 TArray로 아이템의 저장을, TMap으로 아이템의 출력을, TSet으로 아이템 사용 판정에 쓰일 칭호들을 저장을 맡도록 사용했다.
+데이터 테이블과 조합하면 효율적인 인벤토리를 구현할 수 있다. 아이템 객체들을 직접 가지고 있는 경우보다 아이템의 코드만 컨테이너에 가지고 있다가 인벤토리나 아이템을 불러올 때 테이블을 참조하는 식이다. TMap을 선택하면 아이템 코드와 갯수로 이루어진 효율적인 인벤토리를 제공할것이고, TArray를 사용하면 아이템이 각각의 인벤토리 칸을 차지하는 자연스러운 구조를 만들 수도 있을 것이다. 지금은 TArray로 아이템의 저장을, TMap으로 아이템의 출력을, TSet으로 아이템 사용 판정에 쓰일 칭호들을 저장을 맡도록 사용했다.
 
 ```c++
 //InventoryTestActor.h
@@ -74,17 +74,17 @@ tags: [Unreal, Project, Container, TArray, TMap, TSet]
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ItemRow.h"
-#include "InventoryTestActort.generated.h"
+#include "InventoryTestActor.generated.h"
 
 class AItemBase;
 UCLASS()
-class NBC_INVENTORY_API AInventoryTestActort : public AActor
+class NBC_INVENTORY_API AInventoryTestActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AInventoryTestActort();
+	AInventoryTestActor();
 
 protected:
 	// Called when the game starts or when spawned
@@ -120,17 +120,17 @@ public:
 ```
 ```c++
 //InventoryTestActor.cpp
-#include "InventoryTestActort.h"
+#include "InventoryTestActor.h"
 
 // Sets default values
-AInventoryTestActort::AInventoryTestActort()
+AInventoryTestActor::AInventoryTestActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	
 }
 
 // Called when the game starts or when spawned
-void AInventoryTestActort::BeginPlay()
+void AInventoryTestActor::BeginPlay()
 {
 	Super::BeginPlay();
 	//타이틀 추가
@@ -154,7 +154,7 @@ void AInventoryTestActort::BeginPlay()
 	UseItem(FName("CEOChair"));
 }
 
-void AInventoryTestActort::AddItem(FName NewItemCode)
+void AInventoryTestActor::AddItem(FName NewItemCode)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Try Adding an item: %s"), *(NewItemCode.ToString()));
 	//Add new item to TArray
@@ -167,7 +167,7 @@ void AInventoryTestActort::AddItem(FName NewItemCode)
 	UE_LOG(LogTemp, Warning, TEXT("Item Added: %s"), *(Item->ItemName.ToString()));
 }
 
-void AInventoryTestActort::UseItem(FName UsedItemCode)
+void AInventoryTestActor::UseItem(FName UsedItemCode)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Try using an item: %s"), *(UsedItemCode.ToString()));
 	//Add new item to TArray
@@ -185,7 +185,7 @@ void AInventoryTestActort::UseItem(FName UsedItemCode)
 	UE_LOG(LogTemp, Warning, TEXT("Item Used: %s"), *(Item->ItemName.ToString()));
 }
 
-void AInventoryTestActort::ShowInventory()
+void AInventoryTestActor::ShowInventory()
 {
 	//Count Items using TMap
 	TMap<FName, int32> InventoryDisplayer;
@@ -199,19 +199,19 @@ void AInventoryTestActort::ShowInventory()
 	}
 }
 
-void AInventoryTestActort::AddTitle(FName NewTitle)
+void AInventoryTestActor::AddTitle(FName NewTitle)
 {
 	Titles.Add(NewTitle);
 	UE_LOG(LogTemp, Warning, TEXT("Title Added: %s"), *(NewTitle.ToString()));
 }
 
-void AInventoryTestActort::RemoveTitle(FName RemovedTitle)
+void AInventoryTestActor::RemoveTitle(FName RemovedTitle)
 {
 	Titles.Remove(RemovedTitle);
 	UE_LOG(LogTemp, Warning, TEXT("Title Removed: %s"), *(RemovedTitle.ToString()));
 }
 
-void AInventoryTestActort::ShowTitles() {
+void AInventoryTestActor::ShowTitles() {
 	//Display Titles
 	UE_LOG(LogTemp, Warning, TEXT("Owning Titles:"));
 	for (FName Title : Titles) {
@@ -219,7 +219,7 @@ void AInventoryTestActort::ShowTitles() {
 	}
 }
 
-FItemRow* AInventoryTestActort::FindItem(FName ItemCode)
+FItemRow* AInventoryTestActor::FindItem(FName ItemCode)
 {
 	if (!IsValid(ItemTable)) {
 		UE_LOG(LogTemp, Warning, TEXT("No Item Table!"));
