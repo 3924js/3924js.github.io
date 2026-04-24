@@ -2,8 +2,8 @@
 title: "Unreal: 자료 컨테이너 - TArray, TMap, TSet"
 author: Jaeseong Kim
 date: 2026-04-23 8:00:00 +0800
-categories: [Unreal, Project]
-tags: [Unreal, Project, Container, TArray, TMap, TSet]
+categories: [Unreal, Basics]
+tags: [Unreal, Basics, Container, TArray, TMap, TSet]
 ---
 ## TObjectPtr<>
 * UE4까지 존재하던 원시 포인터 (UObject*)를 대체하기 위해 추가된 템플릿 기반의 포인터이다.
