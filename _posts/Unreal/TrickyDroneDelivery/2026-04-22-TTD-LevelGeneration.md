@@ -14,7 +14,7 @@ tags: [Unreal, Project, GameMode, GameState]
     <figcaption>경사지붕 집</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260421-house2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260422-house2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>평지붕 집</figcaption>
   </figure>
 </div>
