@@ -132,13 +132,17 @@ void ATDDGameMode::DisableDelivery(AActor* DestroyedActor) {
     <figcaption>시작시 보이지 않는 배달지점</figcaption>
   </figure>
   <figure>
-    <img src="/assets/img/260421-grid2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <img src="/assets/img/260422-grid2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
     <figcaption>픽업과 함께 활성화된 배달지점</figcaption>
   </figure>
 </div>
 
 ## 랜덤 적 배치, 난이도 설정
 이제 전에 만들어두었던 적들도 배치를 할 수 있도록 해야겠다. 3개의 스테이지로 구성하고, 1레벨엔 적 없이 가장 작은 상자만, 2레벨엔 중간 상자까지, 3레벨엔 가장 큰 상자까지 배치할 것이다. 적들도 1레벨엔 아무것도 안뜨다가 2레벨에선 4명의 물총꼬마를, 3레벨에선 4마리의 까마귀까지 추가로 생성할 것이다. GameMode클래스에서 구현해보자.
+```c++
+```
+```c++
+```
 
 ## 게임 클리어/오버 판정
 
