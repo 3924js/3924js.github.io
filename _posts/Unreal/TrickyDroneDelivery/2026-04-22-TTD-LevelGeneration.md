@@ -140,12 +140,91 @@ void ATDDGameMode::DisableDelivery(AActor* DestroyedActor) {
 ## 랜덤 적 배치, 난이도 설정
 이제 전에 만들어두었던 적들도 배치를 할 수 있도록 해야겠다. 3개의 스테이지로 구성하고, 1레벨엔 적 없이 가장 작은 상자만, 2레벨엔 중간 상자까지, 3레벨엔 가장 큰 상자까지 배치할 것이다. 적들도 1레벨엔 아무것도 안뜨다가 2레벨에선 4명의 물총꼬마를, 3레벨에선 4마리의 까마귀까지 추가로 생성할 것이다. GameMode클래스에서 구현해보자.
 ```c++
+//TDDGameMode.h
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/GameMode.h"
+#include "TDDGameMode.generated.h"
+
+class ADeliveryZone;
+
+UCLASS()
+class TRICKYDRONEDELIVERY_API ATDDGameMode : public AGameMode
+{
+	GENERATED_BODY()
+public:
+//...
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TTDGameState)
+	int32 Difficulty;
+//...
+};
+  
 ```
 ```c++
-```
+//TDDGameMode.cpp
+void ATDDGameMode::CreateTown()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Creating Town"));
+	int WidthIndex = MaxWidth / GridSize;
+	int HeightIndex = MaxHeight / GridSize;
+	TMap<FVector2D, int32> EnemyCoordinate;
+	for (int i = 1; i < Difficulty; i++) {
+		for (int j = 0; j < 4; j++) {
+			FVector2D NewPoint = FVector2D(FMath::RandRange(-WidthIndex, WidthIndex), FMath::RandRange(-HeightIndex, HeightIndex));
+			while (EnemyCoordinate.Contains(NewPoint) || NewPoint == FVector2D::ZeroVector) {
+				NewPoint = FVector2D(FMath::RandRange(-WidthIndex, WidthIndex), FMath::RandRange(-HeightIndex, HeightIndex));
+			}
+			EnemyCoordinate.Add(NewPoint, i - 1);
+		}
+	}
+	for (int i = -WidthIndex; i <= WidthIndex; i++) {
+		for (int j = -HeightIndex; j <= HeightIndex; j++) {
+			//Spawn enemy
+			if (EnemyCoordinate.Contains(FVector2D(i, j))) {
+				FActorSpawnParameters SpawnParams;
+				SpawnParams.Owner = this;
+				GetWorld()->SpawnActor<AActor>(Enemies[EnemyCoordinate[FVector2D(i, j)]], FVector(i * GridSize, j * GridSize, (EnemyCoordinate[FVector2D(i, j)] == 1) ? 1500 : 0), FRotator::ZeroRotator, SpawnParams);
+				continue;
+			}
+			//Spawn house
+			else {
+				if (i == 0 || j == 0) {
+					continue;
+				}
 
+				if (BuildingPrefabs.IsEmpty()) {
+					//UE_LOG(LogTemp, Warning, TEXT("No Building Prefabs! Spawning sphere instead!"));
+					DrawDebugSphere(GetWorld(), FVector(i * GridSize, j * GridSize, 0), GridSize / 2, 32, FColor::Green, false, 30);
+				}
+				else {
+					//UE_LOG(LogTemp, Warning, TEXT("Spawning Building Prefabs!"));
+					FActorSpawnParameters SpawnParams;
+					SpawnParams.Owner = this;
+					AActor* EventZone = GetWorld()->SpawnActor<AActor>(BuildingPrefabs[FMath::RandRange(0, BuildingPrefabs.Num() - 1)], FVector(i * GridSize, j * GridSize, 0), FRotator::ZeroRotator, SpawnParams);
+				}
+			}
+		}
+	}
+}
+```
+임시로 난이도를 넣어주기 위해 Difficulty 변수에도 UPROPERTY()를 붙여줬다. 난이도 값에 따라 TMap<FVector2D, int32>에 스폰할 적들을 좌표, 적 목록의 인덱스와 함께 저장한다. 마을을 만들기 위한 배치단계에선 건물을 생성하기 전에 적을 스폰할 위치인지 확인하고 맞으면 건물 대신 스폰한다. 까마귀 클래스에 해당하는 인덱스는 스폰시 Z값을 위로 조정해주도록 임시로 만들어주었다. 적 클래스 자체에 스폰할 위치값을 들고 있고 스폰시 그 값을 참조할 수 있도록 하는게 더 좋은 구조이긴 할 것이다.
+지금 상태로는 난이도에 따른 스폰까진 잘 되지만 적들이 움직이질 않는다. Pawn에 기반하는 클래스들은 컨트롤러가 Possess해야 움직일 수 있다. 아닐 경우엔 InputVector를 입력하더라도 무시되어 움직임 자체가 적용되지 않는다. 직접 레벨에 배치하면 자동적으로 AIController에 할당되지만, 지금은 GameMode에서 스폰하는 과정에서 AIController의 할당이 빠지는 것 같다. 때문에 스폰시 Pawn이면 임의의 AIController를 생성해 할당해주는 코드까지 넣어주면 잘 작동하는 모습을 볼 수 있다.
+```c++
+if (APawn* Pawn = Cast<APawn>(SpawnedActor))
+{
+				AAIController* AIController = GetWorld()->SpawnActor<AAIController>();
+				AIController->Possess(Pawn);
+}
+```
+![image](/assets/img/260422-enemy.png)
+
+이제 랜덤하게 배달할 상자도 중앙에 스폰해보자.
 ## 게임 클리어/오버 판정
 
 
-![image](/assets/img/260421-crow.gif)
 
+
+## 이번의 경험: Pawn의 소유 문제
+원래는 Behavior Tree의 사용을 상정하고 처음에 Pawn, Character로 적들을 구현했는데, 
