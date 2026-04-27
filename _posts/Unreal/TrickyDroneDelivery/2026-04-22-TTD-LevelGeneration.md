@@ -51,8 +51,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TTDGameState)
 	float GridSize;
 
-	
+	UFUNCTION()
 	void EnableDelivery();
+  UFUNCTION()
 	void DisableDelivery(AActor* DestroyedActor);
 protected:
 	virtual void StartPlay() override;
@@ -125,7 +126,7 @@ void ATDDGameMode::DisableDelivery(AActor* DestroyedActor) {
 	EnabledZone = -1;
 }
 ```
-생성 후에 레벨의 게임모드로 설정하고, 게임모드에 집들을 등록한 후에 실행해보면 잘 작동함을 확인할 수 있다.
+생성 후에 레벨의 게임모드로 설정하고, 게임모드에 집들을 등록한 후에 실행해보면 잘 작동함을 확인할 수 있다. 피격으로 상자가 파괴되거나, 배달지점에 도착해 상자가 사라지면 OnDestroyed()에 바인드된 DisableDelivery()에 의해 배달지점이 다시 비활성화된다.
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
   <figure>
     <img src="/assets/img/260422-grid1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
@@ -220,11 +221,107 @@ if (APawn* Pawn = Cast<APawn>(SpawnedActor))
 ```
 ![image](/assets/img/260422-enemy.png)
 
-이제 랜덤하게 배달할 상자도 중앙에 스폰해보자.
+이제 랜덤하게 배달할 상자도 중앙에 스폰해보자. 상자의 크기는 작은 상자, 중간상자, 큰상자 3종류로 해놓았다. 3개의 레벨에서 진행에 따라 1종류씩 추가되어 랜덤하게 스폰되도록 만들어보자. 갯수도 레벨이 증가할 때마다 2개씩 증가해 더 많이 배달할 수 있으면 좋겠다.
+```c++
+//TDDGameMode.cpp
+//Spawn packages
+for (int i = 0; i < 4 + Difficulty * 2; i++)
+{
+	FVector SpawnLocation = FVector(FMath::FRandRange(-GridSize/4, GridSize/4),FMath::FRandRange(-GridSize/4, GridSize/4),100.f + (i * 10.f));
+	GetWorld()->SpawnActor<AActor>(DeliveryPackages[FMath::RandRange(0, Difficulty  - 1)], SpawnLocation, FRotator::ZeroRotator);
+}
+```
+CreateTown 마지막 부분에 상자를 스폰하는 코드를 추가해줬다. Simulate Physics가 켜져 있기 때문에 적당한 간격을 두고 상자를 배치해주면 자연스럽게 떨어지면서 쌓이게 된다. 레벨 2를 기준으론 아래 사진처럼 랜덤하게 배치되게 된다.
+![image](/assets/img/260422-packages.png)
+
 ## 게임 클리어/오버 판정
+이제 게임오버/ 게임 클리어 로직을 만들어보자. 상자를 모두 배달해 남은 상자가 없다면 레벨 클리어로 처리하고자 한다. 방금 추가한 상자 생성 로직에서 갯수를 카운팅하도록 하고, 상자가 배달될 때마다 하나씩 감소하고 클리어 조건을 체크하도록 만들어보자.
+```c++
+//TDDGameMode.cpp
+void ATDDGameMode::DecrementPackageCount(AActor* DestroyedActor)
+{
+	PackageCount--;
+	UE_LOG(LogTemp, Warning, TEXT("package destroyed! remaining package - %d"), PackageCount);
+	if (PackageCount <= 0) {
+		UE_LOG(LogTemp, Warning, TEXT("Level Cleared!"));
+	}
+}
+```
+상자 파괴에 DisalbeDelivery()처럼 바인드 될 수 있는 다른 함수인 DecrementPackageCount()를 UFUNCTION()으로 선언했다. 매 상자 파괴시 상자의 카운트가 하나씩 줄어들며 하나도 남지 않으면 클리어로 처리할 것이다.
+한편 클리어가 있으면 패배 판정도 있어야 한다. 3개의 상자를 배달이 아닌 충돌/적에 의해 파괴되면, 그리고 정해진 배달시간이 다 지나면 패배하도록 만들어보자.
+```c++
+//TDDGameState.h
 
+#pragma once
 
+#include "CoreMinimal.h"
+#include "GameFramework/GameState.h"
+#include "TDDGameState.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTimeChange, float, DeliveryTimer);
 
-## 이번의 경험: Pawn의 소유 문제
-원래는 Behavior Tree의 사용을 상정하고 처음에 Pawn, Character로 적들을 구현했는데, 
+UCLASS()
+class TRICKYDRONEDELIVERY_API ATDDGameState : public AGameState
+{
+	GENERATED_BODY()
+public:
+	ATDDGameState();
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TTDGameState)
+	int32 MaxBrokenBoxes;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TTDGameState)
+	int32 LevelTime;
+
+	int32 CurrentBrokenBoxes;
+	FTimerHandle DeliveryTimer;
+	FOnTimeChange OnTimeChange;
+
+	void EndTimer();
+	void BreakBox();
+};
+```
+```c++
+//TDDGameState.cpp
+
+#include "TDDGameState.h"
+
+ATDDGameState::ATDDGameState()
+{
+
+}
+
+void ATDDGameState::BeginPlay()
+{
+	GetWorld()->GetTimerManager().SetTimer(DeliveryTimer, this, &ATDDGameState::EndTimer, LevelTime, false);
+	CurrentBrokenBoxes = 0;
+}
+
+void ATDDGameState::EndTimer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TimerEnded"));
+}
+
+void ATDDGameState::BreakBox()
+{
+	CurrentBrokenBoxes++;
+	UE_LOG(LogTemp, Warning, TEXT("BoxBroken! Count: %d"), CurrentBrokenBoxes);
+	if (CurrentBrokenBoxes >= MaxBrokenBoxes) {
+		UE_LOG(LogTemp, Warning, TEXT("GameOver!"));
+	}
+}
+```
+FTimerHandle을 이용해 시간의 흐름을 체크한다. 시간이 다 되면 EndTimer()를 호출하며, 이는 추후 델리게이트를 통해 만들 게임오버 UI와 연결될 것이다. 박스가 부서질 때 호출되도록 BreakBox()함수를 만들었다. 부서질 때의 조건에 따라 호출될지 여부가 달라야하기에 OnDestroyed()에 바인딩되도록 하진 않고 대신 Holdable 액터의 TakeDamage()에서 직접 호출하도록 만들었다. 컴파일 후 실행해보면 로그로 잘 출력됨을 알 수 있다. UI만 추가하면 어렴풋이는 플레이 가능한 게임이 될 것 같다.
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+  <figure>
+    <img src="/assets/img/260422-gameover.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <figcaption>GameOver메세지 출력</figcaption>
+  </figure>
+  <figure>
+    <img src="/assets/img/260422-clear.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+    <figcaption>Clear 메세지 출력</figcaption>
+  </figure>
+</div>
+
+## 이번의 경험: Pawn의 Possess 문제
+원래는 Behavior Tree의 사용을 상정하고 처음에 Pawn, Character로 적들을 구현했는데, 상태가 2-3개정도로 매우 간단하다보니 오히려 BT를 사용하면 오버엔지니어링같은 상황이 될 것 같아 만들던 도중 선회했다. 다만 AIController 없이는 완전히 입력에 반응하지 않는 지는 몰랐는데, 이걸 추적하는데 꽤나 걸렸던 것 같다.
