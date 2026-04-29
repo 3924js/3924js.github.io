@@ -1,7 +1,7 @@
 ---
 title: "C++: 재귀(Recursion)"
 author: Jaeseong Kim
-date: 2026-04-29 12:00:00 +0800
+date: 2026-04-29 8:00:00 +0800
 categories: [C++, Algorithm]
 tags: [C++, Algorithm, Recursive Function, Recursion, Recursive Call]
 ---
