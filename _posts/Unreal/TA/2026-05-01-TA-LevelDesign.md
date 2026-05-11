@@ -62,11 +62,19 @@ tags: [Unreal, TA, Level Design, AI]
 	* 팹이나 에셋스토어에서 필요한 모든 것들을 조달할 수 있으면 좋겠지만, 때로는 원하는 느낌의 에셋이 없을 수도 있다. AI를 통한 이미지 생성으로 간단하지만 구하기 힘든 프롭들을 충분히 만들어낼 수 있다. 폴리곤이 최적화되어있지 않은점은 아쉽지만, 리토폴로지와 베이킹을 할줄 안다면 개선해서 쓸수도 있고, 5만 폴리곤까진 나나이트가 언리얼엔진에선 잘 돌아가게 만들어준다.
 	<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
 	<figure>
-		<img src="/assets/img/260511-instance1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-		<figcaption>보스급 적에 쓰기 위해 만든 MI 세팅</figcaption>
+		<img src="/assets/img/260510-sterilizer1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+		<figcaption>GPT를 이용해 생성한 드럼형 멸균기 사진</figcaption>
 	</figure>
 	<figure>
-		<img src="/assets/img/260511-instance2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-		<figcaption>특수한 적에게 쓰기 위해 만든 MI 세팅</figcaption>
+		<img src="/assets/img/260510-sterilizer2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+		<figcaption>적절히 편집해 맞는 방향에 집어넣는다.</figcaption>
+	</figure>
+	<figure>
+		<img src="/assets/img/260510-sterilizer3.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+		<figcaption>생성된 3D모델의 모습</figcaption>
+	</figure>
+	<figure>
+		<img src="/assets/img/260510-sterilizer4.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
+		<figcaption>멸균실 방에 배치된 멸균기의 모습 <br>옆의 오븐형 멸균기도 AI로 생성했다.</figcaption>
 	</figure>
 	</div>
