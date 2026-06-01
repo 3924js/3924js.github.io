@@ -1,7 +1,7 @@
 ---
 title: "TA: 나이아가라 시스템(Niagara System)"
 author: Jaeseong Kim
-date: 2026-05-28 02:00:00 +0800
+date: 2026-06-01 02:00:00 +0800
 categories: [Unreal, TA]
 tags: [Unreal, TA, Niagara]
 ---
@@ -13,35 +13,18 @@ tags: [Unreal, TA, Niagara]
 레거시 프로젝트를 다루는게 아니라면, 캐스캐이드는 이제 거의 쓸일이 없고 나이아가라를 주로 쓰게된다. 사용법 자체가 어렵다기 보단 주어진 기능을 어떻게 다양하게 활용할 수 있는지에 대한 경험과 감각이 더 많은 영향을 미치는 듯 하다.
 
 ## 이미터(Emitter)
-파티클을 발생시키는 단위를 이미터라고 부른다. 이미터 안에서는 어떤 파티클을 만들고 얼마나 많이, 어떤색으로, 어떤방향으로, 얼마동안 발생시킬지등 다양한 조건과 상태를 설정할 수 있다. 핵심적으로 많이 쓰는 부분들의 구조를 살펴보노라면 다음과 같다.
-* Emitter Spawn - 이미터가 스폰되는 시점에 CPU에서 정해질 요소들이 배치된다.
-* Emitter Update - 지속적으로 이미터에서 변화시켜야 하는 요소들이 배치된다.
-* Particle Spawn - 이미터가 발생시킬 파티클이 소환될 때 정해지는 요소들이 배치된다. 즉 파티클이 스폰될 때 1번씩 호출된다.
-* Particle Update - 파티클이 소환된 이후 변화되는 요소들이 배치된다. 소환 이후에 지속적으로 적용되는 요소들인 중력, 바람, 색상, 노이즈등이 배치될 수 있다.
+![image](/assets/img/260601-emitter.png)
+파티클을 발생시키는 단위를 이미터라고 부른다. 이미터 안에서는 어떤 파티클을 만들고 얼마나 많이, 어떤색으로, 어떤방향으로, 얼마동안 발생시킬지등 다양한 조건과 상태를 설정할 수 있다. 핵심적으로 많이 쓰는 그룹들을 살펴보노라면 다음과 같다.
+* Emitter Spawn - 이미터가 스폰되는 시점에 CPU에서 호출될 모듈들이 배치된다.
+* Emitter Update - 지속적으로 이미터에서 변화시켜야 하는 모듈들이 배치된다.
+* Particle Spawn - 이미터가 발생시킬 파티클이 소환될 때 정해지는 모듈들이 배치된다. 즉 파티클이 스폰될 때 1번씩 호출된다.
+* Particle Update - 파티클이 소환된 이후 변화되는 모듈들이 배치된다. 소환 이후에 지속적으로 적용되는 모듈들인 중력, 바람, 색상, 노이즈등이 배치될 수 있다.
 * Render - 파티킬이 어떻게 보일지를 결정한다. 스프라이트, 리본등 어떤 파티클을 소환할지와 어떤 머티리얼을 사용할지등을 정한다. 
 
+이런 이미터를 여러가지 조합해 많은 효과를 만들어낸다. 안개부터 무기의 궤적, 폭팔, 화염, 번개등 다양한 VFX를 설정과 구성에 따라 만들어낼 수 있다.
 
-![image](/assets/img/260528-reflection.png)
-즉 경사의 변화율을 알면 적절한 노멀맵을 만들어 입체감을 줄 수 있을 것인데, 그에 딱 알맞는 노드가 있다. DDX 와 DDY라는 노드는 인접한 픽셀과의 값 차이를 계산해 반환해준다. 즉 지금 상황에서 투명도를 넣는다면, 점점 짙어지는 경계면에서 빠르게 증가한다면 높은 증가율, 높은 값을 반환할 것이고, 거의 변화가 없는 일정한 투명도라면 평평한 면처럼 작은 값을 반환해 줄 것이다. 이를 3차원 벡터로 만들어 노멀에 연결해주면 전보단 입체적인 모습을 볼 수 있을 것이다.
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-  <figure>
-    <img src="/assets/img/260528-normal1.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-    <figcaption>알파값에서 ddx, ddy를 이용해 노멀을 만들어 연결했다.</figcaption>
-  </figure>
-  <figure>
-    <img src="/assets/img/260528-normal2.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-    <figcaption>전보단 울퉁불퉁하게 패턴과 일치하는 반사를 보여준다.</figcaption>
-  </figure>
-</div>
+## 모듈(Module)
+이펙트의 기본적인 빌딩 블록들로 이미터와 파티클의 동작을 나타내는 기능들을 가지고 있다. 파티클의 스폰 방식, 주기, 수명, 속도, 색상, 움직임, 노이즈등 여러가지가 있으며, 모듈마다 특정 그룹에는 배치가 안 될 수도 있다. 기본적으로 위에서 아래쪽 순서로 실행되어, 어떤 경우에는 이 순서에 따라 이미터의 모습이 크게 달라질 수도 있다.
 
-다만 지금은 피를 흘린 패턴이기에 이대로 쓰기엔 너무 묽게 튀긴듯한,점성없어 보이는 상태일 수 있다. Roughness를 올려 광을 조금 죽이고, 노멀의 값에도 배율을 달아 조금 줄여주면 스프레이처럼 산발한 방울들보단 좀더 엉겨붙은 듯한 질감을 보일 것이다.
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-  <figure>
-    <img src="/assets/img/260528-normal3.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-    <figcaption>Roughness와 DDX/DDY 결과물에 Multiply노드를 연결했다.</figcaption>
-  </figure>
-  <figure>
-    <img src="/assets/img/260528-normal4.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-    <figcaption>전보다 반사광이 덜하고 패턴 자체가 차분해진 느낌을 준다.</figcaption>
-  </figure>
-</div>
+## 나이아가라 시스템 스폰
+기존의 캐스캐이드, 아니면 사운드의 재생과 마찬가지로 나이아가라 시스템의 재생 월드에 소환하는 형태이다. SpawnSystemAtLocation(), SpawnSystemAttached()로 재생할 수 있는데, 컴포넌트나 참조로 재생중인 인스턴스를 저장해놓지 않으면 재생 도중인 혹은 반복재생하는 나이아가라를 중단할 수 없다.
