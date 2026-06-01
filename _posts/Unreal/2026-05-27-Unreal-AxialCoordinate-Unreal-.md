@@ -21,7 +21,7 @@ tags: [Unreal, Axial Coordiante, Hex Map]
 ## Axial Coordinate: 이미 생각하던 방법의 이론 버전
 당연하겠지만 타일맵은 꽤나 흔하게 쓰인 게임 요소이고, 이걸 변환할 방법을 나만 생각하지도 않았을 것이다. 이런 개념을 지칭하는 단어가 있는데 축 좌표게(Axial Coordinate)이다. 
 
-![image](/assets/img/260527-Axial.png)
+![image](/assets/img/260527-axial.png)
 
 위에서 내가 떠올린 방법을 하나의 시스템으로 만들어놓은 형태이다. 좌표변환도 내가 생각한 방법과 유사하지만 훨씬 깔끔한 방법을 거친다.
 * x, y좌표를 A,B 벡터로 나누어 실수 단위 값으로 변환한다.
