@@ -40,6 +40,6 @@ tags: [Unreal, TA, Volumetric Fog]
   </figure>
   <figure>
     <img src="/assets/img/260528-normal4.png" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-    <figcaption>전보다 반사광과 패턴 자체가 차분해진 느낌을 준다.</figcaption>
+    <figcaption>전보다 반사광이 덜하고 패턴 자체가 차분해진 느낌을 준다.</figcaption>
   </figure>
 </div>
