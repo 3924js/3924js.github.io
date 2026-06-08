@@ -5,9 +5,9 @@ date: 2026-06-08 02:00:00 +0800
 categories: [Unreal, TA]
 tags: [Unreal, TA, Toon Shading]
 ---
-## 비 사실적 랜더링(Non-Photorealistic Rendering, NPR)
-비 사실적 랜더링(Non-Photorealistic Rendering, NPR)은 그래픽 느낌이나 성능등 여러 목적 하에 게임이나 영화에서 많이 보이는 그래픽 기법의 큰 범주이다. 물리기반 랜더링(Physical-Based Rendering, PRB), 사실주의 렌더링이 아닌 대부분의 기법을 통칭하는 분류로 쓰이는 편인데, 게임 업계에서 제일 대표적으로 찾아볼 수 있는건 카툰 랜더딩/툰쉐이딩같은 2D 그림 스타일의 그래픽일 것이다. 다만 실제로는 구별되는 스타일들로 여럿 나뉠 수 있다.
-1. 툰 쉐이딩/ 셀 쉐이딩/ 카툰 랜더링 (Toon Shading/Cel Shading/Cartoon Rendering)
+## 비 사실적 렌더링(Non-Photorealistic Rendering, NPR)
+비 사실적 렌더링(Non-Photorealistic Rendering, NPR)은 특정한 그래픽 느낌을 내기 위해 게임이나 영화에서 많이 보이는 그래픽 기법의 큰 범주이다. 물리 기반 렌더링(Physical-Based Rendering, PBR), 사실주의 렌더링이 아닌 대부분의 기법을 통칭하는 분류로 쓰이는 편인데, 게임 업계에서 제일 대표적으로 찾아볼 수 있는건 카툰 렌더딩/툰쉐이딩같은 2D 그림 스타일의 그래픽일 것이다. 다만 실제로는 구별되는 스타일들로 여럿 나뉠 수 있다.
+1. 툰 쉐이딩/ 셀 쉐이딩/ 카툰 렌더링 (Toon Shading/Cel Shading/Cartoon Rendering)
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
         <img src="/assets/img/260609-ninokuni.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
@@ -54,7 +54,7 @@ tags: [Unreal, TA, Toon Shading]
 		* 실루엣 라인/윤곽선을 이용한 표현
 		* 단조로운 색상과 명암
 		* 
-4. 회화풍/ 페인터리 랜더링(Paintary Rendering)
+4. 회화풍/ 페인터리 렌더링(Painterly Rendering)
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
         <img src="/assets/img/260609-ori.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
@@ -68,7 +68,7 @@ tags: [Unreal, TA, Toon Shading]
 	* 붓그림, 유화같은 회화의 느낌을 중심으로 하는 스타일이다. 어느정도는 그래픽 노블 풍과 겹치는 느낌도 있다.
 		* 붓터치같은 거친 텍스처
 		* 회화같은 색 구성
-5. 팬앤잉크/해칭/흑백 고대비
+5. 펜앤잉크/해칭/흑백 고대비 (Pen-and-Ink)
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
         <img src="/assets/img/260609-obradinn.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
@@ -82,7 +82,7 @@ tags: [Unreal, TA, Toon Shading]
 	* 펜으로 그린 것 처럼 선의 밀도로 명암을 표현하는 스타일이다.
 	* 선의 밀도와 방향, 흐름등으로 명암이나 색을 구분/표현할 수 있다.
 	* 다만 3D 그래픽과 애니메이션에서 볼때는 지글거리는 듯한 느낌을 받을 수도 있다.
-6. 종이공예/클레이/스톱모션풍
+6. 수공예풍(종이공예/클레이/스톱모션풍)
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
         <img src="/assets/img/260609-yoshi.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
@@ -93,11 +93,12 @@ tags: [Unreal, TA, Toon Shading]
         <figcaption style="text-align: center;">해롤드 할리벗</figcaption>
     </figure> 
     </div>
-	* 수공예 특유의 재질과 모델링 스타일에 보다 집중하는 스타일이다.
+    * 수공예 특유의 재질과 모델링 스타일에 보다 집중하는 스타일이다.
         * 거친 질감
         * 끊기는 듯한 프레임
         * 세트장, 모형같은 디자인
-        * 자연광보단 조명같은 광원
+    * NPR의 범주에 엄밀히 들어가진 않지만, 아트 디렉션의 범주 하에서 어느정도의 연관성은 있다. 
+
 7. 로우폴리/플랫/미니멀 스타일
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
@@ -109,10 +110,11 @@ tags: [Unreal, TA, Toon Shading]
         <figcaption style="text-align: center;">A Short Hike</figcaption>
     </figure>
     </div>
-	* 인디게임에서 꽤나 많이 봤을법한 스타일로, 낮은 폴리곤 수의 모델로 구성한다. 디자인의 간편함과 성능에서의 장점등이 있다.
+	* 인디게임에서 꽤나 많이 봤을법한 스타일로, 낮은 폴리곤 수의 모델로 구성한다. 의도적인 미니멀리즘의 표현일 수도 있고, 혹은 성능에서의 장점이 목적일 수도 있다.
         * 극도로 낮은 폴리곤 수
         * 디테일보단 형태 중심의 표현
         * 색감이나 택스처등 느낌은 게임마다 다양하게 표현 가능
+    * 수공예풍처럼 NPR의 범주에 엄밀히 들어가진 않지만, 아트 디렉션의 범주 하에서 어느정도의 연관성은 있다. 
 
 ## 머티리얼 vs 포스트 프로세싱
 툰쉐이딩이나 NPR을 구현하는데 있어서 머티리얼과 포스트 프로세싱은 둘 다 사용 가능한 기술이지만 서로 경쟁관계라기보단 상호보완적인 관계이다.
@@ -124,6 +126,7 @@ tags: [Unreal, TA, Toon Shading]
 	* 전체적인 색감/명암을 조정하고 톤앤매너를 통일한다.
 	* 외곽선을 생성할 위치를 확인해 입힌다.
 	* 카메라 효과 부여한다.
+언리얼의 기본 Lit 머티리얼에서는 엔진의 조명 계산 결과를 완전히 직접 양자화하기 어렵기 때문에, 강한 툰 셰이딩은 Unlit 기반 가짜 조명, 커스텀 셰이딩 모델, 포스트 프로세스, 또는 라이트/노멀 정보를 별도로 넘기는 방식이 필요할 수 있다.
 
 ## 길티기어 스타일의 툰 쉐이딩
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tWcaQ3gCbUU?si=NTayNOYcaTOWSIkb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
