@@ -43,11 +43,11 @@ tags: [Unreal, TA, Toon Shading]
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
         <img src="/assets/img/260609-sable.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-        <figcaption style="text-align: center;">니노쿠니2</figcaption>
+        <figcaption style="text-align: center;">세이블</figcaption>
     </figure>
     <figure>
         <img src="/assets/img/260609-Synergy.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-        <figcaption style="text-align: center;">Mabinogi</figcaption>
+        <figcaption style="text-align: center;">시너지</figcaption>
     </figure>
     </div>
 	* 선으로 그린 그림같은 표현에 집중한다. 툰쉐이딩과 함께 쓰이는 일이 많지만, 선그림 특유의 느낌에 집중하는 형태도 보일 때도 있다.
@@ -58,11 +58,11 @@ tags: [Unreal, TA, Toon Shading]
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <figure>
         <img src="/assets/img/260609-ori.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-        <figcaption style="text-align: center;">니노쿠니2</figcaption>
+        <figcaption style="text-align: center;">오리와 눈먼 숲</figcaption>
     </figure>
     <figure>
         <img src="/assets/img/260609-arcane.jpg" alt="" style="width:100%; aspect-ratio:4/3; object-fit:cover;">
-        <figcaption style="text-align: center;">Mabinogi</figcaption>
+        <figcaption style="text-align: center;">아케인</figcaption>
     </figure>
     </div>
 	* 붓그림, 유화같은 회화의 느낌을 중심으로 하는 스타일이다. 어느정도는 그래픽 노블 풍과 겹치는 느낌도 있다.
