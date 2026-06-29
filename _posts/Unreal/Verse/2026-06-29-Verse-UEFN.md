@@ -1,9 +1,9 @@
 ---
-title: "Verse: 언리얼 에디터 포트나이트,"
+title: "Verse: 언리얼 엔진 6 & 언리얼 에디터 포 포트나이트"
 author: Jaeseong Kim
 date: 2026-06-26 08:00:00 +0800
-categories: [Unreal, Basics]
-tags: [Unreal, Basics, GAS, Gameplay Effect]
+categories: [Unreal, Verse]
+tags: [Unreal, Verse, UE6]
 ---
 [언리얼 엔진 6를 향한 여정](https://www.unrealengine.com/news/the-road-to-ue-6?lang=ko)
 
