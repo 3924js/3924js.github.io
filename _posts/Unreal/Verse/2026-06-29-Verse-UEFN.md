@@ -1,7 +1,7 @@
 ---
 title: "Verse: 언리얼 엔진 6 & 언리얼 에디터 포 포트나이트"
 author: Jaeseong Kim
-date: 2026-06-26 08:00:00 +0800
+date: 2026-06-29 08:00:00 +0800
 categories: [Unreal, Verse]
 tags: [Unreal, Verse, UE6]
 ---
