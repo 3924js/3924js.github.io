@@ -1,5 +1,5 @@
 ---
-title: "C++: 누적 합 (Prefix Sum)"
+title: "C++: 그래프(Graph)"
 author: Jaeseong Kim
 date: 2026-07-08 8:00:00 +0800
 categories: [C++, Algorithm]
