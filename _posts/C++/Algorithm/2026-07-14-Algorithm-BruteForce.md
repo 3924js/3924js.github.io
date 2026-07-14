@@ -1,7 +1,7 @@
 ---
 title: "C++: 완전 탐색(Brute Force)"
 author: Jaeseong Kim
-date: 2026-06-10 8:00:00 +0800
+date: 2026-07-14 8:00:00 +0800
 categories: [C++, Algorithm]
 tags: [C++, Algorithm, Brute Force]
 ---
