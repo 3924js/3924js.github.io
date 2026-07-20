@@ -4,6 +4,7 @@ author: Jaeseong Kim
 date: 2026-07-14 8:00:00 +0800
 categories: [C++, Algorithm]
 tags: [C++, Algorithm, Brute Force]
+math: true
 ---
 ## 완전 탐색(Brute Force, Exhaustive Search)
 * 무차별 대입(Brute Force)라는 암호학 용어에서 유래한 말로, 모든 경우의 수를 확인하는 방법을 뜻한다.
