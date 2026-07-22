@@ -1,9 +1,9 @@
 ---
 title: "Unreal: 묘력만점(Meowtractive) 작업 내역 정리"
 author: Jaeseong Kim
-date: 2026-07-16 08:00:00 +0800
+date: 2026-07-21 08:00:00 +0800
 categories: [Unreal, Basics]
-tags: [Unreal, Basics, GAS, Gameplay Cue, Niagara]
+tags: [Unreal, Basics, GAS, Gameplay Cue, Niagara, State Tree, Skeletal Mesh Merge]
 ---
 ## 묘력만점
 ![묘력만점 깃허브 레포지토리](https://github.com/NBcampUnrealTrack/8th-Team9-CH4-Project)
