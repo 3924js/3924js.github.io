@@ -4,6 +4,7 @@ author: Jaeseong Kim
 date: 2026-07-22 8:00:00 +0800
 categories: [C++, Algorithm]
 tags: [C++, Algorithm, Dijkstra]
+math: true
 ---
 ## 다익스트라 알고리즘(Dijkstra Algorithm)
 ![Graph](/assets/img/260722-graph.png)
